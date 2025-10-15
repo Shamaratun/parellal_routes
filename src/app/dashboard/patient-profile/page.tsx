@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import GetPatientInfoWithId from "./getPatientInfoWithId";
-const patient_id = 62;
-const admission_id = 19;
+const patient_id = 123;
+const admission_id = 86;
 
 export default function PatientProfilePage() {
   return (

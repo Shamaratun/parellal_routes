@@ -1,36 +1,84 @@
-import { medicalInfoDummy } from "./dummyData/medicalInfoDummy";
+"use client";
 
-export default function MedicalComponent() {
+import React from "react";
+
+type PreOp = {
+  id: number;
+  patient_id?: number;
+  admission_id?: number;
+  co_morbidities_id?: string[];
+  diagnosis_id?: string[];
+  drug_history?: string[];
+  dt?: string;
+  insert_date?: string;
+  surgical_history?: string;
+  remarks?: string | null;
+  [key: string]: any;
+};
+
+interface ProfileData {
+  pre_ops_data?: PreOp[] | null;
+}
+
+interface Props {
+  profile: ProfileData;
+}
+
+const fmtDateTime = (iso?: string) =>
+  iso ? new Date(iso).toLocaleString() : "N/A";
+
+const fmtDate = (iso?: string) =>
+  iso ? new Date(iso).toLocaleDateString() : "N/A";
+
+const joinOrNA = (arr?: string[] | null) =>
+  Array.isArray(arr) && arr.length ? arr.join(", ") : "N/A";
+
+export default function MedicalComponent({ profile }: Props) {
+  const preOps = profile?.pre_ops_data;
+
   return (
-  <div className="bg-white p-4 rounded-xl shadow mb-4 overflow-x-auto">
-  <h2 className="font-semibold text-green-600 mb-4 text-lg">Medical Information</h2>
+    <div className="space-y-6 p-4">
+     
+        <h3 className="text-lg font-semibold mb-3">Medical Information</h3>
 
-  <table className="min-w-full border border-gray-200">
-    <thead className="bg-green-100">
-      <tr>
-        <th className="text-left p-2 border-b">Condition</th>
-        <th className="text-left p-2 border-b">Diagnosis Date</th>
-        <th className="text-left p-2 border-b">Medications</th>
-        <th className="text-left p-2 border-b">Doctor</th>
-        <th className="text-left p-2 border-b">Notes</th>
-      </tr>
-    </thead>
-    <tbody>
-      {medicalInfoDummy.conditions.map((c, i) => (
-        <tr key={i} className="hover:bg-gray-50">
-          <td className="p-2 border-b">{c.conditionName}</td>
-          <td className="p-2 border-b">{c.diagnosisDate}</td>
-          <td className="p-2 border-b">{c.medications.join(", ")}</td>
-          <td className="p-2 border-b">{c.doctor}</td>
-          <td className="p-2 border-b">{c.notes}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+        {!preOps || !Array.isArray(preOps) || preOps.length === 0 ? (
+          <p className="text-sm text-gray-500">No medical records.</p>
+        ) : (
+          preOps.map((rec, idx) => (
+            <div key={rec.id ?? idx} className="mb-4 border rounded p-3 bg-gray-50">
+              
 
-  {medicalInfoDummy.conditions.length === 0 && (
-    <p className="text-gray-500 mt-2">No medical information available.</p>
-  )}
-</div>
+              <table className="w-full text-sm">
+                <tbody>
+                  <tr className="border-t">
+                    <td className="p-2 font-medium w-48">Co-morbidities</td>
+                    <td className="p-2">{joinOrNA(rec.co_morbidities_id)}</td>
+                  </tr>
+
+                  <tr className="border-t">
+                    <td className="p-2 font-medium">Diagnosis (IDs)</td>
+                    <td className="p-2">{joinOrNA(rec.diagnosis_id)}</td>
+                  </tr>
+
+                  <tr className="border-t">
+                    <td className="p-2 font-medium">Drug History</td>
+                    <td className="p-2">{joinOrNA(rec.drug_history)}</td>
+                  </tr>
+
+                  <tr className="border-t">
+                    <td className="p-2 font-medium">Surgical History</td>
+                    <td className="p-2">{rec.surgical_history ?? "N/A"}</td>
+                  </tr>
+
+                  <tr className="border-t">
+                    <td className="p-2 font-medium">Remarks</td>
+                    <td className="p-2">{rec.remarks ?? "N/A"}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          ))
+        )}
+    </div>
   );
 }
