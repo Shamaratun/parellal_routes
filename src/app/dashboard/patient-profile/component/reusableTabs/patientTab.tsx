@@ -57,13 +57,7 @@ export default function PatientTabs() {
       bgColor: "bg-yellow-100",
       hoverColor: "hover:bg-yellow-200",
     },
-    {
-    value: "surgical-data",       // <-- Add this
-    label: "Surgical / Post-Op",
-    icon: Stethoscope,           // you can pick another icon if you like
-    bgColor: "bg-green-100",
-    hoverColor: "hover:bg-green-200",
-  },
+   
     {
       value: "notes",
       label: "Notes",

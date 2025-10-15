@@ -1,57 +1,21 @@
-"use server";
+// "use server";
 
-export async function getProfileAction(patient_id: number) {
-  const baseUrl =
-    'https://sdms-api-o74bb.ondigitalocean.app/api/v1';
-console.log("Base URL:", baseUrl);
-  const payload = {
-    action_mode: "get_profile_by_patient_id",
-    patient_id: patient_id
-  };
-
-  console.log("➡️ Request URL:", `${baseUrl}/patientProfile/getProfile`);
-  console.log("➡️ Payload:", payload);
-
-  if (!patient_id) {
-    throw new Error("Invalid patient_id provided");
-  }
-
-  try {
-    const res = await fetch(`${baseUrl}/patientProfile/getProfile`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-      cache: "no-store",
-    });
-
-    const data = await res.json();
-    console.log("⬅️ Response JSON:", data);
-
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}, message: ${data?.message || "Bad Request"}`);
-    }
-
-    return data;
-  } catch (err) {
-    console.error("❌ Fetch failed:", err);
-    throw err;
-  }
-}
-
-//  "use server";
-
-// export async function getProfileAction(patient_id: number) {
-//   if (!patient_id) throw new Error("Invalid patient_id");
-
-//   const baseUrl = "https://sdms-api.onrender.com/api/v1"; 
-
+// export async function getProfileAction(patient_id: number, admission_id?: number) {
+//   const baseUrl =
+//     'https://sdms-api-o74bb.ondigitalocean.app/api/v1';
+// console.log("Base URL:", baseUrl);
 //   const payload = {
-//     action_mode: "get_profile", 
-//     patient_id,
+//     action_mode: "get_profile_by_patient_id",
+//     patient_id: patient_id,
+//     admission_id: admission_id 
 //   };
 
 //   console.log("➡️ Request URL:", `${baseUrl}/patientProfile/getProfile`);
 //   console.log("➡️ Payload:", payload);
+
+//   if (!patient_id) {
+//     throw new Error("Invalid patient_id provided");
+//   }
 
 //   try {
 //     const res = await fetch(`${baseUrl}/patientProfile/getProfile`, {
@@ -65,9 +29,7 @@ console.log("Base URL:", baseUrl);
 //     console.log("⬅️ Response JSON:", data);
 
 //     if (!res.ok) {
-//       throw new Error(
-//         `HTTP error! status: ${res.status}, message: ${data?.message || "Bad Request"}`
-//       );
+//       throw new Error(`HTTP error! status: ${res.status}, message: ${data?.message || "Bad Request"}`);
 //     }
 
 //     return data;
@@ -76,3 +38,82 @@ console.log("Base URL:", baseUrl);
 //     throw err;
 //   }
 // }
+
+// //  "use server";
+
+// // export async function getProfileAction(patient_id: number) {
+// //   if (!patient_id) throw new Error("Invalid patient_id");
+
+// //   const baseUrl = "https://sdms-api.onrender.com/api/v1"; 
+
+// //   const payload = {
+// //     action_mode: "get_profile", 
+// //     patient_id,
+// //   };
+
+// //   console.log("➡️ Request URL:", `${baseUrl}/patientProfile/getProfile`);
+// //   console.log("➡️ Payload:", payload);
+
+// //   try {
+// //     const res = await fetch(`${baseUrl}/patientProfile/getProfile`, {
+// //       method: "POST",
+// //       headers: { "Content-Type": "application/json" },
+// //       body: JSON.stringify(payload),
+// //       cache: "no-store",
+// //     });
+
+// //     const data = await res.json();
+// //     console.log("⬅️ Response JSON:", data);
+
+// //     if (!res.ok) {
+// //       throw new Error(
+// //         `HTTP error! status: ${res.status}, message: ${data?.message || "Bad Request"}`
+// //       );
+// //     }
+
+// //     return data;
+// //   } catch (err) {
+// //     console.error("❌ Fetch failed:", err);
+// //     throw err;
+// //   }
+// // }
+"use server";
+
+export async function getProfileAction(patient_id: number, admission_id?: number) {
+  if (patient_id === undefined || patient_id === null) {
+    console.error("❌ Invalid patient_id provided:", patient_id);
+    throw new Error("Invalid patient_id provided");
+  }
+
+  const baseUrl = 'https://sdms-api-o74bb.ondigitalocean.app/api/v1';
+  const payload = {
+    action_mode: "get_profile_by_patient_id",
+    patient_id,
+    admission_id
+  };
+
+  try {
+    console.log("📤 Sending payload:", payload);
+
+    const res = await fetch(`${baseUrl}/patientProfile/getProfile`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      cache: "no-store",
+    });
+
+    const data = await res.json();
+
+    console.log("📥 Response data:", data);
+
+    if (!res.ok) {
+      console.error(`❌ HTTP error! status: ${res.status}, message: ${data?.message}`);
+      throw new Error(`HTTP error! status: ${res.status}, message: ${data?.message || "Bad Request"}`);
+    }
+
+    return data;
+  } catch (err: any) {
+    console.error("❌ Fetch failed:", err);
+    throw err;
+  }
+}

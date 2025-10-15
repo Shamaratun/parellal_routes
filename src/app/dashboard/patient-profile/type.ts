@@ -9,7 +9,6 @@
   address_line_one: string;
   }
 
-
 export interface AdmissionData {
   adm_status: string;
   date_of_adm: string;
@@ -24,6 +23,36 @@ export interface AdmissionData {
   update_by: string | null;
   update_date: string | null;
   
+}
+
+export interface PreSurgicalData {
+  id?: number;
+  patient_id: number;
+  hospital_id: number;
+  doctor_id?: number | null;
+  admission_id?: number | null;
+  diagnosis_id?: string[] | null;
+  co_morbidities_id?: string[] | null;
+  drug_history?: string[] | null;
+  investigations?: InvestigationItem[] | null;
+  surgical_history?: string | null;
+  remarks?: string | null;
+  is_active?: number;
+  insert_by?: string | null;
+  insert_date?: string;
+  update_by?: string | null;
+  update_date?: string;
+  dt?: string;
+}
+
+
+export interface InvestigationItem {
+  investigationId: number;
+  testName: string;
+  date: string;
+  result: string;
+  doctor: string;
+  notes?: string;
 }
 export interface SurgicalData{ 
   dt: string;               
@@ -50,6 +79,23 @@ export interface AdmissionItem {
   pre_ops_data: any | null;
   post_ops_data: SurgicalData | null;
   release_data: ReleaseData | null;
+}
+export interface RecordItem {
+  id: number;
+  patient_id: number;
+  hospital_id: number;
+  admission_id: number;
+  doctor_id?: number;
+  file_name: string;
+  file_type?: string;
+  document_type?: string;
+  drive_file_id?: string;
+  remarks?: string;
+}
+
+export interface PatientFilesListProps {
+  patient_id: number;
+  admission_id?: number;
 }
 export interface ReleaseData {
   id: number;
