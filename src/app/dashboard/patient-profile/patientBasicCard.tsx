@@ -24,7 +24,8 @@ export default function PatientDetails({ patient, admissionData }: PatientDetail
         <PatientInfo label="Gender" value={patient.gender} />
         <PatientInfo label="Mobile" value={patient.mobile_number} />
         <PatientInfo label="Address" value={patient.address_line_one} />
-        <div className="col-span-3 sm:grid-cols-1 md:grid-cols-2 flex"><PatientInfo
+        <div className="col-span-3 sm:grid-cols-1 md:grid-cols-2 flex">
+          <PatientInfo
           label="Hospital Name"
           
           value={admissionData?.hospital_name}

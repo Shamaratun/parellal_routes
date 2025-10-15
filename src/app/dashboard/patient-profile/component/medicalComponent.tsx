@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from "react";
@@ -37,48 +38,35 @@ export default function MedicalComponent({ profile }: Props) {
   const preOps = profile?.pre_ops_data;
 
   return (
-    <div className="space-y-6 p-4">
-     
-        <h3 className="text-lg font-semibold mb-3">Medical Information</h3>
+    <div className="bg-white p-4 rounded-xl shadow mb-4 overflow-x-auto">
+      <h2 className="font-semibold text-green-600 mb-4 text-lg">Medical Information</h2>
 
-        {!preOps || !Array.isArray(preOps) || preOps.length === 0 ? (
-          <p className="text-sm text-gray-500">No medical records.</p>
-        ) : (
-          preOps.map((rec, idx) => (
-            <div key={rec.id ?? idx} className="mb-4 border rounded p-3 bg-gray-50">
-              
-
-              <table className="w-full text-sm">
-                <tbody>
-                  <tr className="border-t">
-                    <td className="p-2 font-medium w-48">Co-morbidities</td>
-                    <td className="p-2">{joinOrNA(rec.co_morbidities_id)}</td>
-                  </tr>
-
-                  <tr className="border-t">
-                    <td className="p-2 font-medium">Diagnosis (IDs)</td>
-                    <td className="p-2">{joinOrNA(rec.diagnosis_id)}</td>
-                  </tr>
-
-                  <tr className="border-t">
-                    <td className="p-2 font-medium">Drug History</td>
-                    <td className="p-2">{joinOrNA(rec.drug_history)}</td>
-                  </tr>
-
-                  <tr className="border-t">
-                    <td className="p-2 font-medium">Surgical History</td>
-                    <td className="p-2">{rec.surgical_history ?? "N/A"}</td>
-                  </tr>
-
-                  <tr className="border-t">
-                    <td className="p-2 font-medium">Remarks</td>
-                    <td className="p-2">{rec.remarks ?? "N/A"}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          ))
-        )}
+      {!preOps || preOps.length === 0 ? (
+        <p className="text-gray-500 mt-2">No medical information available.</p>
+      ) : (
+        <table className="min-w-full border border-gray-200">
+          <thead className="bg-green-100">
+            <tr>
+              <th className="text-left p-2 border-b">Co-morbidities</th>
+              <th className="text-left p-2 border-b">Diagnosis (IDs)</th>
+              <th className="text-left p-2 border-b">Drug History</th>
+              <th className="text-left p-2 border-b">Surgical History</th>
+              <th className="text-left p-2 border-b">Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {preOps.map((rec, idx) => (
+              <tr key={rec.id ?? idx} className="hover:bg-gray-50">
+                <td className="p-2 border-b">{joinOrNA(rec.co_morbidities_id)}</td>
+                <td className="p-2 border-b">{joinOrNA(rec.diagnosis_id)}</td>
+                <td className="p-2 border-b">{joinOrNA(rec.drug_history)}</td>
+                <td className="p-2 border-b">{rec.surgical_history ?? "N/A"}</td>
+                <td className="p-2 border-b">{rec.remarks ?? "N/A"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

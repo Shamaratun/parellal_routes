@@ -69,6 +69,13 @@ export interface AdmissionData {
   remarks: string;
   update_by: string | null;
   update_date: string | null;
+  outcome: string;
+  created_at: string;
+  updated_at: string | null;
+  patient_id: number;
+  admission_id: number;
+  advice_on_discharge: string;
+  discharge_date_time: string;
 }
 
 export interface InvestigationItem {
