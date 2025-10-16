@@ -165,87 +165,91 @@
 //     </Card>
 //   );
 // }
+// "use client";
 "use client";
-import React from "react";
-import { SurgicalData } from "../type";
 
-interface Props {
-  postOps: SurgicalData[];
+import React from "react";
+
+type SurgicalData = {
+  id: number;
+  patient_id?: number;
+  admission_id?: number;
+  operation_name?: string;
+  operation_date?: string;
+  procedure_notes?: string;
+  challenges_during_surgery?: string;
+  complications?: string;
+  post_operative_recovery?: string;
+  nature_of_anesthesia?: string;
+  post_operative_recovery_notes?: string;
+  remarks?: string;
+  [key: string]: any;
+};
+
+interface ProfileData {
+  surgical_data?: SurgicalData[] | null;
 }
 
-export default function SurgicalComponent({ postOps }: Props) {
-  if (!postOps || postOps.length === 0) {
-    return <p className="text-gray-500 italic">No surgical/post-op data available.</p>;
-  }
+interface Props {
+  profile: ProfileData;
+}
 
-  const headers = [
-    "ID",
-    "File",
-    "Remarks",
-    "Doctor ID",
-    "Inserted By",
-    "Active",
-    "Updated By",
-    "Patient ID",
-    "Hospital ID",
-    "Insert Date",
-    "Update Date",
-    "Admission ID",
-    "Document Type",
-    "View File",
-    "Datetime",
-  ];
+const fmtDate = (iso?: string) =>
+  iso ? new Date(iso).toLocaleDateString() : "N/A";
+
+export default function SurgicalComponent({ profile }: Props) {
+  const surgicals = profile?.surgical_data ?? [];
 
   return (
-    <div className="bg-white shadow-md rounded-xl p-4 mt-6 overflow-x-auto">
-      <h2 className="text-lg font-bold text-blue-700 mb-4">🧾 Surgical / Post-Op Data</h2>
-      <table className="min-w-full border border-gray-300 rounded-lg">
-        <thead className="bg-blue-100">
-          <tr>          
-            {headers.map((header) => (
-              <th key={header} className="p-2 border capitalize">
-                {header.replaceAll("_", " ")}
-              </th>
-            ))}
+    <div className="bg-white p-4 rounded-xl shadow mb-4 overflow-x-auto">
+      <h2 className="font-semibold text-green-600 mb-4 text-lg">
+        Surgical / Post-Operative Information
+      </h2>
+
+      <table className="min-w-full border border-gray-200">
+        <thead className="bg-green-100">
+          <tr>
+            <th className="text-left p-2 border-b">Operation Name</th>
+            <th className="text-left p-2 border-b">Operation Date</th>
+            <th className="text-left p-2 border-b">Procedure Notes</th>
+            <th className="text-left p-2 border-b">Challenges During Surgery</th>
+            <th className="text-left p-2 border-b">Complications</th>
+            <th className="text-left p-2 border-b">Nature of Anesthesia</th>
+            <th className="text-left p-2 border-b">Post-Operative Recovery</th>
+            <th className="text-left p-2 border-b">Recovery Notes</th>
+            <th className="text-left p-2 border-b">Remarks</th>
           </tr>
         </thead>
+
         <tbody>
-          {postOps.map((item, index) => (
-            <tr key={item.id} className="border-t text-center hover:bg-gray-50">
-              <td className="p-2 border">{index + 1}</td>
-              <td className="p-2 border">
-                {item.file_name || "N/A"} ({item.file_type || "N/A"})
-              </td>
-              <td className="p-2 border">{item.remarks || "N/A"}</td>
-              <td className="p-2 border">{item.doctor_id || "N/A"}</td>
-              <td className="p-2 border">{item.insert_by || "N/A"}</td>
-              <td className="p-2 border">{item.is_active ?? "N/A"}</td>
-              <td className="p-2 border">{item.update_by || "N/A"}</td>
-              <td className="p-2 border">{item.patient_id || "N/A"}</td>
-              <td className="p-2 border">{item.hospital_id || "N/A"}</td>
-              <td className="p-2 border">{item.insert_date || "N/A"}</td>
-              <td className="p-2 border">{item.update_date || "N/A"}</td>
-              <td className="p-2 border">{item.admission_id || "N/A"}</td>
-              <td className="p-2 border">{item.document_type || "N/A"}</td>
-              <td className="p-2 border">
-                {item.drive_file_id ? (
-                  <a
-                    href={`https://drive.google.com/file/d/${item.drive_file_id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 underline"
-                  >
-                    Open File
-                  </a>
-                ) : (
-                  "N/A"
-                )}
-              </td>
-              <td className="p-2 border">
-                {item.dt ? new Date(item.dt).toLocaleString() : "N/A"}
+          {surgicals.length === 0 ? (
+            <tr>
+              <td
+                colSpan={9}
+                className="text-center text-gray-500 p-3 italic border-b"
+              >
+                No surgical information available.
               </td>
             </tr>
-          ))}
+          ) : (
+            surgicals.map((rec, idx) => (
+              <tr key={rec.id ?? idx} className="hover:bg-gray-50">
+                <td className="p-2 border-b">{rec.operation_name ?? "N/A"}</td>
+                <td className="p-2 border-b">{fmtDate(rec.operation_date)}</td>
+                <td className="p-2 border-b">{rec.procedure_notes ?? "N/A"}</td>
+                <td className="p-2 border-b">
+                  {rec.challenges_during_surgery ?? "N/A"}
+                </td>
+                <td className="p-2 border-b">{rec.complications ?? "N/A"}</td>
+                <td className="p-2 border-b">{rec.nature_of_anesthesia ?? "N/A"}</td>
+                <td className="p-2 border-b">{rec.post_operative_recovery ?? "N/A"}</td>
+                <td className="p-2 border-b">
+                  {rec.post_operative_recovery_notes ?? "N/A"}
+                </td>
+                <td className="p-2 border-b">{rec.remarks ?? "N/A"}</td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

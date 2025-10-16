@@ -119,14 +119,8 @@ export default function GetPatientInfoWithId({
                     </TabsContent>
                 </Tabs>
 
-                <div className="mt-6 mb-4">
-                    <label className="bg-blue-500 text-white px-4 py-2 rounded-lg w-full sm:w-auto cursor-pointer hover:bg-blue-600 transition block text-center sm:inline-block">
-                        List of Uploaded Files
-                    </label>
-
-                    <div className="mt-4">
-                        <PatientFilesList postOps={postOpsData} />
-                    </div>
+                <div className="mt-6 mb-4">           
+                <PatientFilesList postOps={postOpsData} />                    
                 </div>
             </div>
         </div>
