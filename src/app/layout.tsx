@@ -20,9 +20,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   
-     children,
+     children,modal
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -31,6 +32,28 @@ export default function RootLayout({
       >
         {children}
       </body>
+      {modal}
     </html>
   );
 }
+// import type { Metadata } from "next";
+// import "./globals.css";
+
+// export const metadata: Metadata = {
+//   title: "Your App Name",
+//   description: "Your app description here",
+// };
+
+// export default function RootLayout({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }): JSX.Element {
+//   return (
+//     <html lang="en">
+//       <body className="bg-gray-50 text-gray-900">
+//         <main>{children}</main>
+//       </body>
+//     </html>
+//   );
+// }

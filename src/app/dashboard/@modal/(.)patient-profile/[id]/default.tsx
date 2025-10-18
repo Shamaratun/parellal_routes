@@ -1,2 +1,3 @@
-export default function DefaultId() {
-  return<>null</> ; }
+export default function DefaultPatient() {
+  return null; 
+}
