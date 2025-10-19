@@ -14,7 +14,7 @@ export default function PatientDetails({ patient, admissionData }: PatientDetail
         {patient.name.charAt(0)}
       </div>
 
-      <div className="flex grid grid-cols-4  md:grid-cols-3 sm:grid-cols-3 gap-4 w-full">
+      <div className="grid grid-cols-4  md:grid-cols-3 sm:grid-cols-3 gap-4 w-full">
         <div className="col-span-4 text-2xl font-bold">
           <PatientInfo label="Patient Name" value={patient.name} />
         </div>

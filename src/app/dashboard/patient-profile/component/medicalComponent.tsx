@@ -1,23 +1,11 @@
 "use client";
 
 import React from "react";
+import { PreOpsData } from "../type";
 
-type PreOp = {
-  id: number;
-  patient_id?: number;
-  admission_id?: number;
-  co_morbidities_id?: string[];
-  diagnosis_id?: string[];
-  drug_history?: string[];
-  dt?: string;
-  insert_date?: string;
-  surgical_history?: string;
-  remarks?: string | null;
-  [key: string]: any;
-};
 
 interface ProfileData {
-  pre_ops_data?: PreOp[] | null;
+  pre_ops_data?: PreOpsData[] | null;
 }
 
 interface Props {

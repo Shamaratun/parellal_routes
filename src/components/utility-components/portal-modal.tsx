@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import { ButtonDemo } from "@/app/dashboard/patient-profile/component/reusableTabs/buttonDemo";
 
 interface PortalModalProps {
   isOpen: boolean;
@@ -54,7 +55,8 @@ const PortalModal: React.FC<PortalModalProps> = ({
         style={{ maxWidth }}
       >
         <div className="flex justify-between items-center mb-4 px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold">{title}</h2>
+          <ButtonDemo/>
+          {/* <h2 className="text-xl font-semibold">{title}</h2> */}
           <button
             onClick={onClose}
             className="text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition"

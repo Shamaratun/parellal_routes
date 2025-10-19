@@ -2,61 +2,19 @@
 
 import { useEffect, useState } from "react";
 
-
-import { Visit } from "../type";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-
-
-const RecentVisitDummy = [
-  {
-    id: 1,
-    date: "2025-10-08",
-    time: "10:30 AM",
-    department: "Cardiology",
-    doctor: "Dr. A. Rahman",
-    reason: "Chest pain checkup",
-    status: "Completed",
-  },
-  {
-    id: 2,
-    date: "2025-10-06",
-    time: "2:15 PM",
-    department: "Neurology",
-    doctor: "Dr. M. Ahsan",
-    reason: "Migraine follow-up",
-    status: "Pending",
-  },
-  {
-    id: 3,
-    date: "2025-10-04",
-    time: "11:00 AM",
-    department: "Orthopedics",
-    doctor: "Dr. K. Hossain",
-    reason: "Knee joint pain",
-    status: "Cancelled",
-  },
-  {
-    id: 4,
-    date: "2025-10-01",
-    time: "9:45 AM",
-    department: "Dermatology",
-    doctor: "Dr. S. Chowdhury",
-    reason: "Skin allergy",
-    status: "Completed",
-  },
-  {
-    id: 5,
-    date: "2025-09-29",
-    time: "4:30 PM",
-    department: "ENT",
-    doctor: "Dr. L. Ahmed",
-    reason: "Ear infection",
-    status: "Completed",
-  },
-];
+ interface Visit {
+  id: number;
+  date: string;
+  time: string;
+  department: string;
+  doctor: string;
+  reason: string;
+  status: string;
+}
 export default function RecentVisitComponent() {
-  const [visits, setVisits] = useState<Visit[]>(RecentVisitDummy);
+  const [visits, setVisits] = useState<Visit[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -83,6 +41,7 @@ export default function RecentVisitComponent() {
           Recent Visits
         </CardTitle>
       </CardHeader>
+
       <CardContent>
         {loading ? (
           <div className="p-4 text-gray-500">Loading...</div>
@@ -99,25 +58,36 @@ export default function RecentVisitComponent() {
                 </tr>
               </thead>
               <tbody>
-                {visits.map((visit) => (
-                  <tr
-                    key={visit.id}
-                    className="border-b hover:bg-gray-50 transition"
-                  >
-                    <td className="py-3 px-4">
-                      <div>{visit.date}</div>
-                      <div className="text-sm text-gray-400">{visit.time}</div>
-                    </td>
-                    <td className="py-3 px-4">{visit.department}</td>
-                    <td className="py-3 px-4">{visit.doctor}</td>
-                    <td className="py-3 px-4">{visit.reason}</td>
-                    <td className="py-3 px-4">
-                      <span className="bg-green-100 text-green-700 text-sm font-medium px-3 py-1 rounded-full">
-                        {visit.status}
-                      </span>
+                {visits.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={5}
+                      className="text-center py-6 text-gray-400 italic"
+                    >
+                      No recent visits found
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  visits.map((visit) => (
+                    <tr
+                      key={visit.id}
+                      className="border-b hover:bg-gray-50 transition"
+                    >
+                      <td className="py-3 px-4">
+                        <div>{visit.date}</div>
+                        <div className="text-sm text-gray-400">{visit.time}</div>
+                      </td>
+                      <td className="py-3 px-4">{visit.department}</td>
+                      <td className="py-3 px-4">{visit.doctor}</td>
+                      <td className="py-3 px-4">{visit.reason}</td>
+                      <td className="py-3 px-4">
+                        <span className="bg-green-100 text-green-700 text-sm font-medium px-3 py-1 rounded-full">
+                          {visit.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

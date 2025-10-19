@@ -156,7 +156,7 @@ export default function GetPatientInfoWithId({
                 ></div>
                 <MedicalHistoryTab
                   pre_ops_data={preOpsData}
-                    surgical_data={postOpsData}
+                  surgical_data={postOpsData}
                   post_ops_data={postOpsData}
                 />
               </div>

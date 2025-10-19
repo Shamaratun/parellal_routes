@@ -1,22 +1,8 @@
 "use client";
 
 import React from "react";
+import { SurgicalData } from "../type";
 
-type SurgicalData = {
-  id: number;
-  patient_id?: number;
-  admission_id?: number;
-  operation_name?: string;
-  operation_date?: string;
-  procedure_notes?: string;
-  challenges_during_surgery?: string;
-  complications?: string;
-  post_operative_recovery?: string;
-  nature_of_anesthesia?: string;
-  post_operative_recovery_notes?: string;
-  remarks?: string;
-  [key: string]: any;
-};
 
 interface ProfileData {
   surgical_data?: SurgicalData[] | null;
