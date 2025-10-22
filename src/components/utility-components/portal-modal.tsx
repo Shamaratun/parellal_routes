@@ -16,14 +16,13 @@ interface PortalModalProps {
 const PortalModal: React.FC<PortalModalProps> = ({
   isOpen,
   onClose,
-  title,
   children,
   maxWidth = "1200px",
 }) => {
   const [container, setContainer] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    // Create container only on client
+  
     const el = document.createElement("div");
     el.className =
       "portal-container fixed inset-0 z-50 flex justify-center items-start bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-60 transition-opacity";
@@ -56,7 +55,6 @@ const PortalModal: React.FC<PortalModalProps> = ({
       >
         <div className="flex justify-between items-center mb-4 px-4 py-2 border-b border-gray-200 dark:border-gray-700">
           <ButtonDemo/>
-          {/* <h2 className="text-xl font-semibold">{title}</h2> */}
           <button
             onClick={onClose}
             className="text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition"

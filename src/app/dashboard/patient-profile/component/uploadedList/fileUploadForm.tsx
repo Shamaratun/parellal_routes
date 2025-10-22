@@ -3,10 +3,10 @@
 import React, { useState, useRef, forwardRef, useImperativeHandle } from "react";
 import { X, Plus } from "lucide-react";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
-import { file, z } from "zod";
+import { z } from "zod";
 
 import Image from "next/image";
-import uploadToDriveAction from "@/lib/actions/uploadToDriveAction";
+
 import fileAPI from "@/lib/actions/fileApi";
 
 // ------------------- ZOD Schema -------------------
@@ -37,7 +37,7 @@ export interface UploadedFile {
 }
 
 export interface FileUploadFormRef {
-  uploadFiles: () => Promise<{ success: boolean; data?: any }>;
+  uploadFiles: () => Promise<{ success: boolean; data?: FileUploadFormData  }>;
   getFiles: () => UploadedFile[];
   clearFiles: () => void;
 }

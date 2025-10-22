@@ -7,7 +7,7 @@ type Investigations = Record<string, string | number | null>;
 interface PreOp {
   id?: number | string;
   investigations?: Investigations;
-  [key: string]: any;
+ 
 }
 
 interface ProfileData {

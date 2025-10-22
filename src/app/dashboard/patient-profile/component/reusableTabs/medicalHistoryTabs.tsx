@@ -14,7 +14,7 @@ interface MedicalHistoryTabProps {
   pre_ops_data: PreOpsData[];
 }
 
-export default function MedicalHistoryTab({ post_ops_data,surgical_data, pre_ops_data }: MedicalHistoryTabProps) {
+export default function MedicalHistoryTab({surgical_data, pre_ops_data }: MedicalHistoryTabProps) {
    const sections = [
   {
     title: "Surgical Information",

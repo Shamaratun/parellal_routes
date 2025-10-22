@@ -57,9 +57,18 @@ export type SurgicalData = {
   nature_of_anesthesia?: string;
   post_operative_recovery_notes?: string;
   remarks?: string;
-  [key: string]: any;
-}
 
+}
+export interface PostOpsData {
+  id: number;
+  patient_id: number;
+  admission_id: number;
+  file_name?: string;
+  document_type?: string;
+  insert_date?: string;
+  dt?: string;
+  file_type?: string; // <-- add this line
+}
 export type PreOpsData = {
   id: number;
   patient_id?: number;
@@ -72,7 +81,7 @@ export type PreOpsData = {
   surgical_history?: string;
   remarks?: string | null;
    investigations?: Record<string, string>;
-  [key: string]: any;
+ 
 }
 
 
@@ -93,11 +102,4 @@ export interface PatientFilesListProps {
   admission_id?: number;
 }
 
-// export interface ProfileData {
-//   patient_basic?: Partial<Patient> | null;
-//   admission_data?: Partial<AdmissionData> | null;
-//   pre_ops_data?: PreOpsData[] | null;
-//   post_ops_data?: SurgicalData[] | null;
-//   release_data?: ReleaseData | null;
-//   [key: string]: any;
-// }
+

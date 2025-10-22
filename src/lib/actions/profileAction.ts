@@ -35,7 +35,7 @@ export async function getProfileAction(patient_id: number, admission_id?: number
     }
 
     return data;
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("❌ Fetch failed:", err);
     throw err;
   }

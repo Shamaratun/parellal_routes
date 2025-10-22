@@ -6,7 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   AdmissionData,
   Patient,
-  SurgicalData,
+  PostOpsData
+  ,
   ReleaseData,
   PreOpsData,
 } from "./type";
@@ -30,7 +31,7 @@ export default function GetPatientInfoWithId({
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [admissions, setAdmissions] = useState<AdmissionData[]>([]);
   const [releaseData, setReleaseData] = useState<ReleaseData[]>([]);
-  const [postOpsData, setPostOpsData] = useState<SurgicalData[]>([]);
+  const [postOpsData, setPostOpsData] = useState<PostOpsData[]>([]);
   const [preOpsData, setPreOpsData] = useState<PreOpsData[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -53,9 +54,13 @@ export default function GetPatientInfoWithId({
         }
         setPostOpsData(data.post_ops_data ?? data.post_surgical_data ?? []);
         setPreOpsData(data.pre_ops_data ?? data.investigation_data ?? []);
-      } catch (err: any) {
-        setError(err.message || "Failed to load patient profile");
-      }
+      } catch (err: unknown) {
+  if (err instanceof Error) {
+    setError(err.message);
+  } else {
+    setError("Failed to load patient profile");
+  }
+}
     });
   }, [patient_id, admission_id]);
 

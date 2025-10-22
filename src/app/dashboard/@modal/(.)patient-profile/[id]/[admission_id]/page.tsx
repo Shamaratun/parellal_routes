@@ -1,5 +1,4 @@
-
-
+"use client";
 import React, { Suspense, use } from 'react';
 import ModalPortal from '@/components/utility-components/portal-modal';
 import { useRouter } from 'next/navigation';
