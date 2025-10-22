@@ -10,7 +10,7 @@ import {
   ReleaseData,
   PreOpsData,
 } from "./type";
-import { getProfileAction } from "./profileAction";
+import { getProfileAction } from "../../../lib/actions/profileAction";
 import PatientDetails from "./patientBasicCard";
 import MedicalHistoryTab from "./component/reusableTabs/medicalHistoryTabs";
 import RecentVisitComponent from "./component/recentVisitComponent";

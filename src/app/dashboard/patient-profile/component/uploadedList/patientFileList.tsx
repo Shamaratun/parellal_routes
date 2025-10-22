@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { SurgicalData } from "../../type";
-import fileAPI from "@/app/dashboard/patient-profile/component/uploadedList/fileApi";
+import uploadToDriveAction from "@/lib/actions/uploadToDriveAction";
+import FileUploadForm from "./fileUploadForm";
+import fileAPI from "@/lib/actions/fileApi";
 
 interface Props {
   postOps: SurgicalData[];
@@ -64,6 +66,7 @@ export default function PatientFilesList({ postOps }: Props) {
 
   return (
     <div className="bg-white shadow-md rounded-xl p-4 mt-6 overflow-x-auto">
+      <FileUploadForm/>
       <h2 className="text-lg font-bold text-blue-700 mb-4">List of Uploaded Files</h2>
       <table className="min-w-full border border-gray-300 rounded-lg">
         <thead className="bg-blue-100">

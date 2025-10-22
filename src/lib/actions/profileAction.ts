@@ -7,7 +7,8 @@ export async function getProfileAction(patient_id: number, admission_id?: number
     throw new Error("Invalid patient_id provided");
   }
 
-  const baseUrl = 'https://sdms-api-o74bb.ondigitalocean.app/api/v1';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SDMS_API_BASE || "http://localhost:5000/api/v1";
   const payload = {
     action_mode: "get_profile_by_patient_id",
     patient_id,
