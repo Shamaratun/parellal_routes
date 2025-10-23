@@ -1,13 +1,16 @@
 "use client";
-
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import { useEffect, useState, useTransition } from "react";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   AdmissionData,
   Patient,
-  PostOpsData
-  ,
+  PostOpsData,
   ReleaseData,
   PreOpsData,
 } from "./type";
@@ -18,6 +21,8 @@ import RecentVisitComponent from "./component/recentVisitComponent";
 import PatientFilesList from "./component/uploadedList/patientFileList";
 import PatientTabs from "./component/reusableTabs/patientTab";
 import AdmissionRelease from "./component/admissionRelease";
+import { Button } from "@/components/ui/button";
+import { ChevronsUpDown } from "lucide-react";
 
 interface GetPatientInfoWithIdProps {
   patient_id: number;
@@ -55,12 +60,12 @@ export default function GetPatientInfoWithId({
         setPostOpsData(data.post_ops_data ?? data.post_surgical_data ?? []);
         setPreOpsData(data.pre_ops_data ?? data.investigation_data ?? []);
       } catch (err: unknown) {
-  if (err instanceof Error) {
-    setError(err.message);
-  } else {
-    setError("Failed to load patient profile");
-  }
-}
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Failed to load patient profile");
+        }
+      }
     });
   }, [patient_id, admission_id]);
 
@@ -96,21 +101,6 @@ export default function GetPatientInfoWithId({
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-100 text-gray-800">
-      {/* === Animated gradient keyframes === */}
-      <style jsx>{`
-        @keyframes slow-pulse {
-          0%,
-          100% {
-            opacity: 0.8;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 1;
-            transform: scale(1.03);
-          }
-        }
-      `}</style>
-
       {/* === Floating animated background glow === */}
       <div
         className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(147,197,253,0.4),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(191,219,254,0.4),transparent_50%)]"
@@ -118,7 +108,7 @@ export default function GetPatientInfoWithId({
       ></div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-        {/* === Patient Info === */}
+        {/* === Basic Info === */}
         <div className="relative p-6 rounded-2xl bg-white/70 backdrop-blur-md border border-white/40 shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
           <div
             className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(147,197,253,0.4),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(191,219,254,0.4),transparent_50%)]"
@@ -128,65 +118,30 @@ export default function GetPatientInfoWithId({
             patient={selectedPatient}
             admissionData={latestAdmission}
           />
+
         </div>
 
-        {/* === Admission & Release === */}
-        <div className="relative p-6 rounded-2xl bg-white/70 backdrop-blur-md border border-white/40 shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
-          <div
-            className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(147,197,253,0.4),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(191,219,254,0.4),transparent_50%)]"
-            style={{ animation: "slow-pulse 8s ease-in-out infinite" }}
-          ></div>
-          <AdmissionRelease
-            admissionData={latestAdmission}
-            releaseData={releaseData}
-          />
-        </div>
+        <AdmissionRelease admissionData={latestAdmission} releaseData={releaseData} />
+
 
         {/* === Tabs Section === */}
-        <div className="relative p-6 rounded-2xl bg-white/70 backdrop-blur-md border border-white/40 shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
-          <div
-            className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(147,197,253,0.4),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(191,219,254,0.4),transparent_50%)]"
-            style={{ animation: "slow-pulse 8s ease-in-out infinite" }}
-          ></div>
-
-          <Tabs defaultValue="medical-history" className="">
+        <div className="relative p-1 rounded-2xl bg-white/70 backdrop-blur-md border border-white/40 shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
+          <Tabs defaultValue="medical-history">
             <PatientTabs />
-
-            {/* Medical History */}
-            <TabsContent value="medical-history">
-              <div className="relative mt-5 rounded-2xl bg-white/80 backdrop-blur-md border border-white/40 p-4 shadow-md hover:shadow-xl transition overflow-hidden">
-                <div
-                  className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(147,197,253,0.4),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(191,219,254,0.4),transparent_50%)]"
-                  style={{ animation: "slow-pulse 8s ease-in-out infinite" }}
-                ></div>
-                <MedicalHistoryTab
-                  pre_ops_data={preOpsData}
-                  surgical_data={postOpsData}
-                  post_ops_data={postOpsData}
-                />
-              </div>
-            </TabsContent>
-
-            {/* Recent Visits */}
+            <MedicalHistoryTab
+              pre_ops_data={preOpsData}
+              surgical_data={postOpsData}
+              post_ops_data={postOpsData}
+            />
             <TabsContent value="recent-visits">
               <Card className="relative mt-4 shadow-md border-none bg-white/80 backdrop-blur overflow-hidden">
-                <div
-                  className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(147,197,253,0.4),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(191,219,254,0.4),transparent_50%)]"
-                  style={{ animation: "slow-pulse 8s ease-in-out infinite" }}
-                ></div>
                 <CardContent>
                   <RecentVisitComponent />
                 </CardContent>
               </Card>
             </TabsContent>
-
-            {/* Notes */}
             <TabsContent value="notes">
               <Card className="relative mt-4 shadow-md border-none bg-white/80 backdrop-blur overflow-hidden">
-                <div
-                  className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(147,197,253,0.4),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(191,219,254,0.4),transparent_50%)]"
-                  style={{ animation: "slow-pulse 8s ease-in-out infinite" }}
-                ></div>
                 <CardContent>
                   <p className="text-gray-700 text-base">
                     Doctor or nurse notes will be shown here.
@@ -197,12 +152,13 @@ export default function GetPatientInfoWithId({
           </Tabs>
         </div>
 
-        {/* === Files Section === */}
-        <div className="relative p-6 rounded-2xl bg-white/70 backdrop-blur-md border border-white/40 shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
+        <div className="relative p-6 sm:p-8 bg-gradient-to-br from-blue-50 via-white to-blue-100/70 rounded-3xl shadow-xl border border-blue-100/60 backdrop-blur-lg overflow-x-auto max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-transparent">
+          {/* Subtle animated glow inside the same box (kept for aesthetics) */}
           <div
             className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(147,197,253,0.4),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(191,219,254,0.4),transparent_50%)]"
             style={{ animation: "slow-pulse 8s ease-in-out infinite" }}
           ></div>
+
           <PatientFilesList postOps={postOpsData} />
         </div>
       </div>

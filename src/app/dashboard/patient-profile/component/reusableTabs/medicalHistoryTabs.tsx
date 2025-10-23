@@ -22,18 +22,18 @@ export default function MedicalHistoryTab({surgical_data, pre_ops_data }: Medica
   },
   {
     title: "Medical Information",
-    component: <MedicalComponent profile={{ pre_ops_data }} />, // without investigations
+    component: <MedicalComponent profile={{ pre_ops_data }} />,
   },
   {
     title: "Investigation Details",
-    component: <InvestigationComponent profile={{ pre_ops_data }} />, // only investigations
+    component: <InvestigationComponent profile={{ pre_ops_data }} />, 
   },
 ];
 
   return (
     <TabsContent value="medical-history">
       <Card className="mt-4">
-        <CardContent className="p-4 sm:p-6">
+        <CardContent className="p-2 sm:p-6">
           <CollapsibleSectionList sections={sections} />
         </CardContent>
       </Card>

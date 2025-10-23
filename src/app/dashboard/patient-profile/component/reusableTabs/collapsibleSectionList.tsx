@@ -40,24 +40,7 @@ export default function CollapsibleSectionList({
   };
 
   return (
-//     <div className="flex flex-col space-y-2 min-w-full">
-//       {sections.map((section) => (
-//         <div className="font-semibold text-green-500 mb-4 text-lg"key={section.title}>
-//           <button
-//             className="w-50 text-left px-3 py-2 rounded-md bg-gray-100 hover:bg-gray-200 font-medium"
-//             onClick={() => toggleSection(section.title)}
-//           >
-//             {section.title}
-//           </button>
 
-//           {openSections.has(section.title) && (
-//             <div className="mt-2 ">{section.component}</div>
-//           )}
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
 <div className="flex flex-col space-y-3 min-w-full">
   {sections.map((section) => (
     <div
@@ -80,7 +63,7 @@ export default function CollapsibleSectionList({
 
       {openSections.has(section.title) && (
         <div
-          className="mt-3 p-4 rounded-2xl bg-white/90 shadow-inner border border-blue-100"
+          className="mt-1 rounded-2xl bg-white/90 shadow-inner"
         >
           {section.component}
         </div>

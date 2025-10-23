@@ -80,10 +80,20 @@ export type PreOpsData = {
   insert_date?: string;
   surgical_history?: string;
   remarks?: string | null;
-   investigations?: Record<string, string>;
+  investigations?: Investigation[] | null;
  
 }
+export interface Drug {
+  dose: string;
+  drug_name: string;
+  frequency: string;
+}
 
+export interface Investigation {
+  investigation_id: number;
+  investigation_name: string;
+  investigation_report_result: string;
+}
 
 export interface ReleaseData {
   id: number;

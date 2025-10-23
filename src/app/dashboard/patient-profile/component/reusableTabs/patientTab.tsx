@@ -26,7 +26,7 @@ function ReusableTabs({ tabs }: ReusableTabsProps) {
             <TabsTrigger
               key={tab.value}
               value={tab.value}
-              className={`flex items-center gap-2 px-2 py-2 sm:px-3 sm:py-3 md:px-4 md:py-4 text-sm sm:text-base md:text-lg lg:text-xl text-gray-800 rounded-sm whitespace-nowrap
+              className={`flex items-center gap-2 px-2 py-2 sm:px-3 sm:py-3 md:px-4 md:py-4 text-sm sm:text-base md:text-lg lg:text-xl font-normal text-gray-800 rounded-sm whitespace-nowrap
           ${tab.bgColor || "bg-gray-100"} 
           ${tab.hoverColor || "hover:bg-gray-200"}`}
               style={{ minHeight: "50px" }}      >

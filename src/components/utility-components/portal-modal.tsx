@@ -17,7 +17,7 @@ const PortalModal: React.FC<PortalModalProps> = ({
   isOpen,
   onClose,
   children,
-  maxWidth = "1200px",
+  maxWidth = "1000px",
 }) => {
   const [container, setContainer] = useState<HTMLElement | null>(null);
 

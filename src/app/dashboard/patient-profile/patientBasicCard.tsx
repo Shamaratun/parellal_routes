@@ -8,14 +8,14 @@ export default function PatientDetails({ patient, admissionData }: PatientDetail
   if (!patient) return <p>Loading patient data...</p>;
 
   return (
-     <div className="ml-5 mr-5 w-auto bg-blue-500 text-white p-6 rounded-lg shadow-lg flex space-x-6 items-center">
+    <div className=" w-auto bg-blue-500 text-white p-6 rounded-lg shadow-lg flex space-x-6 items-center">
 
       <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center text-blue-500 text-5xl font-bold">
         {patient.name.charAt(0)}
       </div>
 
       <div className="grid grid-cols-4  md:grid-cols-3 sm:grid-cols-3 gap-4 w-full">
-        <div className="col-span-4 text-2xl font-bold">
+        <div className="col-span-4 text-2xl font-normal">
           <PatientInfo label="Patient Name" value={patient.name} />
         </div>
         <PatientInfo label="Patient ID" value={patient.id} />
@@ -26,11 +26,12 @@ export default function PatientDetails({ patient, admissionData }: PatientDetail
         <PatientInfo label="Address" value={patient.address_line_one} />
         <div className="col-span-3 sm:grid-cols-1 md:grid-cols-2 flex">
           <PatientInfo
-          label="Hospital Name"
-          
-          value={admissionData?.hospital_name}
-        /></div>
+            label="Hospital Name"
+
+            value={admissionData?.hospital_name}
+          /></div>
       </div>
+      
     </div>
   );
 }
@@ -47,7 +48,10 @@ function PatientInfo({
 
   return (
     <div>
+      <div>
       <span >{label}:</span> <span className="font-semibold">{value}</span>
+      </div>
+        
     </div>
   );
 }
