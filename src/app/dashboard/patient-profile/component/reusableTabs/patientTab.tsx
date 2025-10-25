@@ -18,7 +18,7 @@ interface ReusableTabsProps {
 
 function ReusableTabs({ tabs }: ReusableTabsProps) {
   return (
-    // <div className="w-full mb-4 overflow-visible">
+   
       <TabsList className="flex flex-wrap gap-2 w-full">
         {tabs.map((tab) => {
           const Icon = tab.icon;

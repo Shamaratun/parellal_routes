@@ -543,7 +543,7 @@ export default function AdmissionRelease({ admissionData, releaseData }: Props) 
 
   return (
      <div >
-      <h2 className="text-xl font-normal text-blue-800 flex items-center gap-2 mb-2">
+      <h2 className="text-xl pl-7 font-normal text-blue-800 flex items-center gap-2 mb-2">
         🩺 Admission & Release Summary
       </h2>
 

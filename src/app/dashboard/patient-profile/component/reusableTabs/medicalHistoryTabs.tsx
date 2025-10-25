@@ -32,7 +32,7 @@ export default function MedicalHistoryTab({surgical_data, pre_ops_data }: Medica
 
   return (
     <TabsContent value="medical-history">
-      <Card className="mt-4">
+      <Card className="mt-1">
         <CardContent className="p-2 sm:p-6">
           <CollapsibleSectionList sections={sections} />
         </CardContent>

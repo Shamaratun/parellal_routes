@@ -1,9 +1,5 @@
 "use client";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+
 import { useEffect, useState, useTransition } from "react";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,8 +17,7 @@ import RecentVisitComponent from "./component/recentVisitComponent";
 import PatientFilesList from "./component/uploadedList/patientFileList";
 import PatientTabs from "./component/reusableTabs/patientTab";
 import AdmissionRelease from "./component/admissionRelease";
-import { Button } from "@/components/ui/button";
-import { ChevronsUpDown } from "lucide-react";
+
 
 interface GetPatientInfoWithIdProps {
   patient_id: number;
