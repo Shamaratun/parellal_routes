@@ -19,7 +19,7 @@ interface ReusableTabsProps {
 function ReusableTabs({ tabs }: ReusableTabsProps) {
   return (
    
-      <TabsList className="flex flex-wrap gap-2 w-full">
+      <TabsList className="flex mb-2 flex-wrap gap-2 w-full">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           return (
@@ -36,7 +36,7 @@ function ReusableTabs({ tabs }: ReusableTabsProps) {
           );
         })}
       </TabsList>
-    // </div>
+   
   );
 }
 

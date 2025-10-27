@@ -53,7 +53,7 @@ const PortalModal: React.FC<PortalModalProps> = ({
         className="portal-content bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-xl shadow-xl w-full sm:w-[85%] transition-colors"
         style={{ maxWidth }}
       >
-        <div className="flex justify-between items-center mb-4 px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex justify-between items-center  px-2 py-1 border-b border-gray-200 dark:border-gray-700">
           <ButtonDemo/>
           <button
             onClick={onClose}
@@ -62,7 +62,7 @@ const PortalModal: React.FC<PortalModalProps> = ({
             <X size={24} />
           </button>
         </div>
-        <div className="px-4 py-1">{children}</div>
+        <div className="px-1 py-1">{children}</div>
       </div>
     </div>,
     container

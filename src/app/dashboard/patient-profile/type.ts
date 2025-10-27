@@ -41,22 +41,23 @@ export interface AdmissionData {
   admission_id: number;
   advice_on_discharge: string;
   discharge_date_time: string;
+  blood_group: string;
 }
 
 
-export type SurgicalData = {
-  id: number;
-  patient_id?: number;
-  admission_id?: number;
-  operation_name?: string;
+export interface SurgicalData {
+  id?: number;
+  bed_id?: string;
+  operation_id?: string[];
   operation_date?: string;
   procedure_notes?: string;
   challenges_during_surgery?: string;
   complications?: string;
-  post_operative_recovery?: string;
   nature_of_anesthesia?: string;
+  post_operative_recovery?: string;
   post_operative_recovery_notes?: string;
   remarks?: string;
+   surgical_history?: string;
 
 }
 export interface PostOpsData {
@@ -67,7 +68,9 @@ export interface PostOpsData {
   document_type?: string;
   insert_date?: string;
   dt?: string;
-  file_type?: string; // <-- add this line
+  file_type?: string; 
+  remarks?: string;
+
 }
 export type PreOpsData = {
   id: number;
@@ -81,6 +84,7 @@ export type PreOpsData = {
   surgical_history?: string;
   remarks?: string | null;
   investigations?: Investigation[] | null;
+  operation_id?: string[];
  
 }
 export interface Drug {

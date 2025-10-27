@@ -543,7 +543,7 @@ export default function AdmissionRelease({ admissionData, releaseData }: Props) 
 
   return (
      <div >
-      <h2 className="text-xl pl-7 font-normal text-blue-800 flex items-center gap-2 mb-2">
+      <h2 className="text-xl pl-7 font-normal text-blue-800 flex items-center gap-2 mb-1">
         🩺 Admission & Release Summary
       </h2>
 
@@ -577,7 +577,7 @@ export default function AdmissionRelease({ admissionData, releaseData }: Props) 
               {/* Subtle gradient highlight on hover */}
               <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-blue-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
 
-              <div className="relative grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 text-sm text-gray-700">
+              <div className="relative grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 text-md text-gray-700">
                 <Field label="Admission Date" value={fmtDate(adm.date_of_adm)} />
                
                 <Field label="Referral" value={adm.referral_source_name} />
@@ -586,7 +586,10 @@ export default function AdmissionRelease({ admissionData, releaseData }: Props) 
                   value={rel ? fmtDate(rel.discharge_date_time) : "N/A"}
                 />
                 <Field label="Outcome" value={rel?.outcome || "N/A"} />
-                 <Field label="Hospital" value={adm.hospital_name} />
+                <Field label="Adv.On.Discharge" value={rel?.advice_on_discharge || "N/A"} />
+                {/* <Field label="Blood Group" value={rel?.blood_group || "N/A"} /> */}
+               
+                 {/* <Field label="Hospital" value={adm.hospital_name} /> */}
               </div>
             </div>
           );

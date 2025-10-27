@@ -1,75 +1,138 @@
+// import {
+//   Collapsible,
+//   CollapsibleContent,
+//   CollapsibleTrigger,
+// } from "@/components/ui/collapsible"
+// import SurgicalComponent from "../surgicalComponent"
+// import MedicalComponent from "../medicalComponent"
+// import InvestigationComponent from "../investigationComponent"
+// import { PreOpsData, SurgicalData } from "../../type";
+// import React from "react";
+
+// interface MedicalHistoryTabProps {
+//   post_ops_data: SurgicalData[];
+//   surgical_data: SurgicalData[];
+//   pre_ops_data: PreOpsData[];
+  
+// }
+
+
+// export default function CollapsibleSectionList({surgical_data, pre_ops_data }: MedicalHistoryTabProps) {
+//    const [isOpen, setIsOpen] = React.useState(true)
+//   return (
+//     <div className="flex p-8 flex-wrap gap-4">
+//       {/* Surgical Info */}
+//       <Collapsible defaultValue="medical-history" open={isOpen}
+//       onOpenChange={setIsOpen}
+//       className="flex w-[350px] flex-col gap-2">
+//         <CollapsibleTrigger className="w-[48%] bg-blue-100 text-blue-800 font-normal text-2xl text-center py-2 rounded-lg shadow hover:bg-blue-200 transition">
+//           Surgical Information
+//         </CollapsibleTrigger>
+//         <CollapsibleContent className="w-full scroll-auto">
+//           <SurgicalComponent surgical_data={surgical_data} pre_ops_data={pre_ops_data} />
+//         </CollapsibleContent>
+//       </Collapsible>
+
+//       {/* Medical Info */}
+//       <Collapsible  defaultValue="medical-history" open={isOpen}
+//       onOpenChange={setIsOpen}
+//       className="flex w-full flex-col gap-2">
+//         <CollapsibleTrigger className="w-[48%] bg-blue-100 text-blue-800 font-normal text-2xl text-center py-2 rounded-lg shadow hover:bg-blue-200 transition">
+//           Medical Information
+//         </CollapsibleTrigger>
+//         <CollapsibleContent className="w-full scroll-auto">
+//           <MedicalComponent profile={{ pre_ops_data }} />
+//         </CollapsibleContent>
+//       </Collapsible>
+
+//       {/* Investigation Info */}
+//       <Collapsible defaultValue="medical-history" open={isOpen}
+//       onOpenChange={setIsOpen}
+//       className="flex w-[350px] flex-col gap-2">
+//         <CollapsibleTrigger className="w-[48%] bg-blue-100 text-blue-800 font-normal text-2xl text-center py-2 rounded-lg shadow hover:bg-blue-200 transition">
+//           Investigation Details
+//         </CollapsibleTrigger>
+//         <CollapsibleContent className="w-full scroll-auto">
+//           <InvestigationComponent profile={{ pre_ops_data }} />
+//         </CollapsibleContent>
+//       </Collapsible>
+//     </div>
+//   );
+// }
 "use client";
 
-import { useState, useEffect } from "react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import SurgicalComponent from "../surgicalComponent";
+import MedicalComponent from "../medicalComponent";
+import InvestigationComponent from "../investigationComponent";
+import { PreOpsData, SurgicalData } from "../../type";
+import React from "react";
 
-interface Section {
-  title: string;
-  component: React.ReactNode;
-}
-
-interface CollapsibleSectionListProps {
-  sections: Section[];
-  initiallyOpen?: boolean;
+interface MedicalHistoryTabProps {
+  post_ops_data: SurgicalData[];
+  surgical_data: SurgicalData[];
+  pre_ops_data: PreOpsData[];
 }
 
 export default function CollapsibleSectionList({
-  sections,
-  initiallyOpen = true,
-}: CollapsibleSectionListProps) {
-
-  const [openSections, setOpenSections] = useState<Set<string>>(new Set());
-
-
-  useEffect(() => {
-    if (initiallyOpen) {
-      const allTitles = sections.map((s) => s.title);
-      setOpenSections(new Set(allTitles));
-    }
-  }, [sections, initiallyOpen]);
-
-  const toggleSection = (title: string) => {
-    setOpenSections((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(title)) {
-        newSet.delete(title);
-      } else {
-        newSet.add(title);
-      }
-      return newSet;
-    });
-  };
+  surgical_data,
+  pre_ops_data,
+}: MedicalHistoryTabProps) {
+  // Separate states for multi-open
+  const [isSurgicalOpen, setIsSurgicalOpen] = React.useState(true);
+  const [isMedicalOpen, setIsMedicalOpen] = React.useState(true);
+  const [isInvestigationOpen, setIsInvestigationOpen] = React.useState(true);
 
   return (
+    <div className="flex p-0.5 flex-wrap gap-4">
+     
+      <Collapsible
+        open={isSurgicalOpen}
+        onOpenChange={setIsSurgicalOpen}
+        className="flex w-[350px] flex-col gap-2"
+      >
+        <CollapsibleTrigger className="w-[48%] bg-blue-100 text-blue-800 font-normal text-2xl text-center py-2 rounded-lg shadow hover:bg-blue-200 transition">
+          Surgical Information
+        </CollapsibleTrigger>
+        <CollapsibleContent className="w-full scroll-auto">
+          <SurgicalComponent
+            surgical_data={surgical_data}
+            pre_ops_data={pre_ops_data}
+          />
+        </CollapsibleContent>
+      </Collapsible>
 
-    <div className="flex flex-col space-y-3 min-w-full">
-      {sections.map((section) => (
-        <div
-          key={section.title}
-          className="font-semibold text-blue-700 text-lg"
-        >
-          <button
-            onClick={() => toggleSection(section.title)}
-            className="w-full text-left px-4 py-3 rounded-xl 
-                   bg-gradient-to-r from-blue-50 to-blue-100/60 
-                   hover:from-blue-100 hover:to-blue-200/70
-                   border border-blue-200/60
-                   shadow-sm hover:shadow-md 
-                   font-medium text-blue-800
-                   transition-all duration-300
-                   backdrop-blur-md"
-          >
-            {section.title}
-          </button>
+      {/* Medical Info */}
+      <Collapsible
+        open={isMedicalOpen}
+        onOpenChange={setIsMedicalOpen}
+        className="flex w-[350px] flex-col gap-2"
+      >
+        <CollapsibleTrigger className="w-[48%] bg-blue-100 text-blue-800 font-normal text-2xl text-center py-2 rounded-lg shadow hover:bg-blue-200 transition">
+          Medical Information
+        </CollapsibleTrigger>
+        <CollapsibleContent className="w-full scroll-auto">
+ <MedicalComponent pre_ops_data={pre_ops_data}
+ />        </CollapsibleContent>
+      </Collapsible>
 
-          {openSections.has(section.title) && (
-            <div
-              className="mt-0.5 rounded-2xl bg-white/90 shadow-inner"
-            >
-              {section.component}
-            </div>
-          )}
-        </div>
-      ))}
+      {/* Investigation Info */}
+      <Collapsible
+        open={isInvestigationOpen}
+        onOpenChange={setIsInvestigationOpen}
+        className="flex w-[350px] flex-col gap-2"
+      >
+        <CollapsibleTrigger className="w-[48%] bg-blue-100 text-blue-800 font-normal text-2xl text-center py-2 rounded-lg shadow hover:bg-blue-200 transition">
+          Investigation Details
+        </CollapsibleTrigger>
+        <CollapsibleContent className="w-full scroll-auto">
+          <InvestigationComponent pre_ops_data={pre_ops_data } />
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   );
 }
