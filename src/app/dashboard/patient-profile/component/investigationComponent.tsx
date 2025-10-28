@@ -219,7 +219,7 @@ export default function InvestigationComponent({ pre_ops_data }: Props) {
   );
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-3xl border border-blue-200/50 backdrop-blur-lg p-6 shadow-xl space-y-4">
+    <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-3xl  backdrop-blur-lg  shadow-xl space-y-4">
       {allInvestigations.length === 0 ? (
         <p className="bg-gradient-to-br from-blue-50 to-green-50 p-3 rounded-3xl shadow-xl border border-blue-200/50 backdrop-blur-md text-center text-gray-500 italic">
           No investigation records available.
@@ -228,11 +228,11 @@ export default function InvestigationComponent({ pre_ops_data }: Props) {
         <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <Table className="min-w-full text-[16px]">
             <TableHeader>
-              <TableRow className="bg-gradient-to-r from-blue-100 to-blue-200/70 text-blue-900">
-                <TableHead className="text-left p-4 font-semibold w-1/3">
+              <TableRow className="bg-gradient-to-r from-blue-100 to-blue-200/70 text-blue-900 text-center">
+                <TableHead className="p-4 font-semibold w-1/3">
                   Investigation Name
                 </TableHead>
-                <TableHead className="text-left p-4 font-semibold w-2/3">
+                <TableHead className=" p-4 font-semibold w-2/3">
                   Report Result
                 </TableHead>
               </TableRow>
@@ -242,9 +242,9 @@ export default function InvestigationComponent({ pre_ops_data }: Props) {
               {allInvestigations.map((inv, idx) => (
                 <TableRow
                   key={idx}
-                  className="bg-blue-50 hover:bg-blue-100 transition text-gray-800"
+                  className=" hover:bg-blue-100 transition text-gray-700"
                 >
-                  <TableCell className="p-4 font-medium text-blue-800">
+                  <TableCell className="p-4 font-medium text-gray-700">
                     {inv.investigation_name}
                   </TableCell>
                   <TableCell className="p-4 text-gray-700">

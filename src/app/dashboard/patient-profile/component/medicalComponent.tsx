@@ -94,113 +94,247 @@
 //     // </div>
 //   );
 // }
+//&&&&&&&& different information different row $&&&&&
+// "use client";
+
+// import {
+//   Table,
+//   TableBody, 
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table";
+// import { PreOpsData } from "../type";
+
+// interface Drug {
+//   drug_name: string;
+//   dose: string;
+//   frequency: string;
+// }
+
+
+
+// interface Props {
+//   pre_ops_data: PreOpsData[];
+// }
+
+// const joinOrNA = (arr?: string[]) =>
+//   arr && arr.length > 0 ? arr.join(", ") : "--";
+
+// export default function MedicalComponent({ pre_ops_data }: Props) {
+//   return (
+//     <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-3xl  border border-blue-200/50 backdrop-blur-lg p-6 space-y-6 overflow-x-auto">
+//       <Table className="rounded-lg min-w-[900px] md:min-w-[1000px] lg:min-w-[1200px] ">
+//         <TableHeader>
+//           <TableRow className="bg-gradient-to-r from-blue-100 to-blue-200/70 text-gray-800">
+//             <TableHead >Rec.ID</TableHead>
+//             <TableHead >Co-morbidities</TableHead>
+//             <TableHead >Diagnosis</TableHead>
+//             <TableHead>Surgical History</TableHead>
+//             <TableHead className="text-center w-64">Remarks</TableHead>
+//             <TableHead className="font-semibold text-center rounded-r-lg">
+//               Drug History
+//             </TableHead>
+//           </TableRow>
+//         </TableHeader>
+
+//         <TableBody>
+//           {pre_ops_data.map((rec) => {
+//             const drugs =
+//               rec.drug_history
+//                 ?.map((drugStr) => {
+//                   try {
+//                     return JSON.parse(drugStr) as Drug;
+//                   } catch {
+//                     return null;
+//                   }
+//                 })
+//                 .filter(Boolean) ?? [];
+
+//             return (
+//               <TableRow
+//                 key={rec.id}
+//                 className="bg-blue-50 hover:bg-blue-100 text-center transition-all duration-200"
+//               >
+//                 <TableCell>{rec.id}</TableCell>
+//                 <TableCell>{joinOrNA(rec.co_morbidities_id)}</TableCell>
+//                 <TableCell>{joinOrNA(rec.diagnosis_id)}</TableCell>
+//                 <TableCell>{rec.surgical_history ?? "--"}</TableCell>
+//                 <TableCell>
+//                   {joinOrNA(
+//                     Array.isArray(rec.remarks)
+//                       ? rec.remarks
+//                       : rec.remarks
+//                       ? [rec.remarks]
+//                       : []
+//                   )}
+//                 </TableCell>
+//                 <TableCell>
+//                   {drugs.length > 0 ? (
+//                     <Table className="min-w-full text-[14px] border border-gray-200 rounded-lg">
+//                       <TableHeader>
+//                         <TableRow className="bg-blue-200 text-gray-800 font-semibold">
+//                           <TableHead className="p-1 text-left">Drug Name</TableHead>
+//                           <TableHead className="p-1 text-left">Dose</TableHead>
+//                           <TableHead className="p-1 text-left">Frequency</TableHead>
+//                         </TableRow>
+//                       </TableHeader>
+//                       <TableBody>
+//                         {drugs.map((drug, index) => (
+//                           <TableRow
+//                             key={index}
+//                             className="border-t hover:bg-green-50 transition"
+//                           >
+//                             <TableCell className="p-1">{drug?.drug_name}</TableCell>
+//                             <TableCell className="p-1">{drug?.dose}</TableCell>
+//                             <TableCell className="p-1">{drug?.frequency}</TableCell>
+//                           </TableRow>
+//                         ))}
+//                       </TableBody>
+//                     </Table>
+//                   ) : (
+//                     <span className="text-gray-500 italic">No drugs</span>
+//                   )}
+//                 </TableCell>
+//               </TableRow>
+//             );
+//           })}
+//         </TableBody>
+//       </Table>
+//     </div>
+//   );
+// }
 "use client";
 
 import {
   Table,
-  TableBody, 
+  TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PreOpsData } from "../type";
-
-interface Drug {
-  drug_name: string;
-  dose: string;
-  frequency: string;
-}
-
-
+import { Drug, PreOpsData } from "../type";
 
 interface Props {
   pre_ops_data: PreOpsData[];
 }
 
-const joinOrNA = (arr?: string[]) =>
-  arr && arr.length > 0 ? arr.join(", ") : "--";
+const joinOrNA = (arr?: string[]) => (arr && arr.length > 0 ? arr.join(", ") : "--");
+
+const getFieldValue = (rec: PreOpsData, key: string) => {
+  if (key === "remarks") return Array.isArray(rec.remarks) ? rec.remarks.join(", ") : rec.remarks ?? "--";
+  if (key === "co_morbidities_id" || key === "diagnosis_id") return joinOrNA((rec as any)[key]);
+  if (key === "surgical_history") return rec.surgical_history ?? "--";
+  return (rec as any)[key] ?? "--";
+};
 
 export default function MedicalComponent({ pre_ops_data }: Props) {
+  if (!pre_ops_data || pre_ops_data.length === 0) {
+    return (
+      <div className="bg-gradient-to-br from-blue-50 to-green-50 p-3 rounded-3xl shadow-xl border border-blue-200/50 text-gray-500 italic text-center">
+        No medical records available.
+      </div>
+    );
+  }
+
+  const fields = [
+    // { label: "Rec.ID", key: "id" },
+    { label: "Co-morbidities", key: "co_morbidities_id" },
+    { label: "Diagnosis", key: "diagnosis_id" },
+    { label: "Surgical History", key: "surgical_history" },
+    { label: "Remarks", key: "remarks" },
+    { label: "Drug History", key: "drug_history" },
+  ];
+
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-3xl  border border-blue-200/50 backdrop-blur-lg p-6 space-y-6 overflow-x-auto">
-      <Table className="rounded-lg min-w-[900px] md:min-w-[1000px] lg:min-w-[1200px] ">
-        <TableHeader>
-          <TableRow className="bg-gradient-to-r from-blue-100 to-blue-200/70 text-gray-800">
-            <TableHead >Rec.ID</TableHead>
-            <TableHead >Co-morbidities</TableHead>
-            <TableHead >Diagnosis</TableHead>
-            <TableHead>Surgical History</TableHead>
-            <TableHead className="text-center w-64">Remarks</TableHead>
-            <TableHead className="font-semibold text-center rounded-r-lg">
-              Drug History
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {pre_ops_data.map((rec) => {
-            const drugs =
-              rec.drug_history
-                ?.map((drugStr) => {
-                  try {
-                    return JSON.parse(drugStr) as Drug;
-                  } catch {
-                    return null;
-                  }
-                })
-                .filter(Boolean) ?? [];
-
-            return (
-              <TableRow
-                key={rec.id}
-                className="bg-blue-50 hover:bg-blue-100 text-center transition-all duration-200"
-              >
-                <TableCell>{rec.id}</TableCell>
-                <TableCell>{joinOrNA(rec.co_morbidities_id)}</TableCell>
-                <TableCell>{joinOrNA(rec.diagnosis_id)}</TableCell>
-                <TableCell>{rec.surgical_history ?? "--"}</TableCell>
-                <TableCell>
-                  {joinOrNA(
-                    Array.isArray(rec.remarks)
-                      ? rec.remarks
-                      : rec.remarks
-                      ? [rec.remarks]
-                      : []
-                  )}
-                </TableCell>
-                <TableCell>
-                  {drugs.length > 0 ? (
-                    <Table className="min-w-full text-[14px] border border-gray-200 rounded-lg">
-                      <TableHeader>
-                        <TableRow className="bg-blue-200 text-gray-800 font-semibold">
-                          <TableHead className="p-1 text-left">Drug Name</TableHead>
-                          <TableHead className="p-1 text-left">Dose</TableHead>
-                          <TableHead className="p-1 text-left">Frequency</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {drugs.map((drug, index) => (
-                          <TableRow
-                            key={index}
-                            className="border-t hover:bg-green-50 transition"
-                          >
-                            <TableCell className="p-1">{drug?.drug_name}</TableCell>
-                            <TableCell className="p-1">{drug?.dose}</TableCell>
-                            <TableCell className="p-1">{drug?.frequency}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  ) : (
-                    <span className="text-gray-500 italic">No drugs</span>
-                  )}
-                </TableCell>
+    <div className="overflow-x-auto">
+      <div className="flex flex-col lg:flex-row gap-4 min-w-[320px]">
+        <div className="flex-1 bg-white rounded-2xl shadow border border-blue-100 overflow-x-auto">
+          <Table className="w-full min-w-[320px] table-auto">
+            <TableHeader>
+              <TableRow className="bg-gradient-to-r from-blue-100 to-blue-200/50 text-gray-800 text-center">
+                <TableHead className="w-32 text-left pl-3 break-words">Rec Id</TableHead>
+                {pre_ops_data.map((rec) => (
+                  <TableHead
+                    key={rec.id}
+                    className="w-48 text-center px-2 break-words whitespace-normal">
+                    {rec.id}
+                  </TableHead>
+                ))}
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+            </TableHeader>
+
+            <TableBody>
+              {fields.map((field) => (
+                <TableRow key={field.key} className="align-top hover:bg-blue-100 transition">
+                  <TableCell className="font-semibold bg-blue-100 text-gray-800 text-left pl-3 w-32 break-words">
+                    {field.label}
+                  </TableCell>
+                  {pre_ops_data.map((rec) => {
+                    if (field.key === "drug_history") {
+                      // Parse drug_history safely
+                      const drugs: Drug[] =
+                        rec.drug_history
+                          ?.map((d) => {
+                            try {
+                              return JSON.parse(d) as Drug;
+                            } catch {
+                              return undefined;
+                            }
+                          })
+                          .filter((d): d is Drug => !!d) ?? [];
+
+                      return (
+                        <TableCell
+                          key={rec.id + field.key}
+                          className="text-center text-gray-700 px-2 break-words whitespace-normal w-48 align-top"
+                        >
+                          {drugs.length > 0 ? (
+                            <Table className="min-w-full text-[14px] border border-gray-200 rounded-lg">
+                              <TableHeader>
+                                <TableRow className="bg-blue-200 text-gray-800 font-semibold">
+                                  <TableHead className="p-1 text-left">Drug Name</TableHead>
+                                  <TableHead className="p-1 text-left">Dose</TableHead>
+                                  <TableHead className="p-1 text-left">Frequency</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {drugs.map((drug, idx) => (
+                                  <TableRow
+                                    key={idx}
+                                    className="border-t hover:bg-blue-100 transition"
+                                  >
+                                    <TableCell className="p-1">{drug.drug_name}</TableCell>
+                                    <TableCell className="p-1">{drug.dose}</TableCell>
+                                    <TableCell className="p-1">{drug.frequency}</TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          ) : (
+                            <span className="text-gray-500 italic">No drugs</span>
+                          )}
+                        </TableCell>
+                      );
+                    }
+
+                    return (
+                      <TableCell
+                        key={rec.id + field.key}
+                        className="text-center text-gray-700 px-2 break-words whitespace-normal w-48 align-top"
+                      >
+                        {getFieldValue(rec, field.key)}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     </div>
   );
 }

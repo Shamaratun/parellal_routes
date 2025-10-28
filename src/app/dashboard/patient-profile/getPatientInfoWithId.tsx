@@ -118,7 +118,7 @@ export default function GetPatientInfoWithId({
           />
         </div>
         <AdmissionRelease admissionData={latestAdmission} releaseData={releaseData} />
-        <div className="relative p-1 rounded-2xl bg-white/70 backdrop-blur-md border border-white/40 shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
+        <div className="relative rounded-2xl bg-white/70 backdrop-blur-md bordershadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
           <Tabs defaultValue="medical-history">
             <PatientTabs />
             <MedicalHistoryTab
@@ -143,7 +143,7 @@ export default function GetPatientInfoWithId({
             </TabsContent>
           </Tabs>
         </div>
-        <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-3xl  border border-blue-200/50 backdrop-blur-lg p-6 space-y-6 overflow-x-auto">
+        <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-3xl  border border-blue-200/50 backdrop-blur-lg pt-6 space-y-6 overflow-x-auto">
           <PatientFilesList postOps={postOpsData} />
         </div>
       </div>

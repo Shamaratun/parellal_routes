@@ -25,7 +25,7 @@ const PortalModal: React.FC<PortalModalProps> = ({
   
     const el = document.createElement("div");
     el.className =
-      "portal-container fixed inset-0 z-50 flex justify-center items-start bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-60 transition-opacity";
+      "portal-container fixed inset-0 z-50 flex justify-center items-start bg-gray-400 bg-opacity-10 dark:bg-black dark:bg-opacity-60 transition-opacity";
     el.style.overflow = "auto";
     el.style.padding = "2rem 0";
     setContainer(el);

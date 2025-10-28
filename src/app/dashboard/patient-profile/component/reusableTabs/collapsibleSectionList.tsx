@@ -13,7 +13,7 @@
 //   post_ops_data: SurgicalData[];
 //   surgical_data: SurgicalData[];
 //   pre_ops_data: PreOpsData[];
-  
+
 // }
 
 
@@ -69,7 +69,7 @@ import {
 import SurgicalComponent from "../surgicalComponent";
 import MedicalComponent from "../medicalComponent";
 import InvestigationComponent from "../investigationComponent";
-import { PreOpsData,SurgicalRecord } from "../../type";
+import { PreOpsData, SurgicalRecord } from "../../type";
 import React from "react";
 
 interface MedicalHistoryTabProps {
@@ -88,7 +88,7 @@ export default function CollapsibleSectionList({
 
   return (
     <div className="flex p-0.5 flex-wrap gap-4">
-     
+
       <Collapsible
         open={isSurgicalOpen}
         onOpenChange={setIsSurgicalOpen}
@@ -97,10 +97,10 @@ export default function CollapsibleSectionList({
         <CollapsibleTrigger className="w-[48%] bg-blue-100 text-blue-800 font-normal text-2xl text-center py-2 rounded-lg shadow hover:bg-blue-200 transition">
           Surgical Information
         </CollapsibleTrigger>
-        <CollapsibleContent className="w-full scroll-auto">
+        <CollapsibleContent className=" pt-1 w-full scroll-auto">
           <SurgicalComponent
             surgical_data={surgical_data}
-           
+
           />
         </CollapsibleContent>
       </Collapsible>
@@ -114,9 +114,9 @@ export default function CollapsibleSectionList({
         <CollapsibleTrigger className="w-[48%] bg-blue-100 text-blue-800 font-normal text-2xl text-center py-2 rounded-lg shadow hover:bg-blue-200 transition">
           Medical Information
         </CollapsibleTrigger>
-        <CollapsibleContent className="w-full scroll-auto">
- <MedicalComponent pre_ops_data={pre_ops_data}
- />        </CollapsibleContent>
+        <CollapsibleContent className="pt-1 w-full scroll-auto">
+          <MedicalComponent pre_ops_data={pre_ops_data}
+          />        </CollapsibleContent>
       </Collapsible>
 
       {/* Investigation Info */}
@@ -128,8 +128,8 @@ export default function CollapsibleSectionList({
         <CollapsibleTrigger className="w-[48%] bg-blue-100 text-blue-800 font-normal text-2xl text-center py-2 rounded-lg shadow hover:bg-blue-200 transition">
           Investigation Details
         </CollapsibleTrigger>
-        <CollapsibleContent className="w-full scroll-auto">
-          <InvestigationComponent pre_ops_data={pre_ops_data } />
+        <CollapsibleContent className="pt-1 w-full scroll-auto">
+          <InvestigationComponent pre_ops_data={pre_ops_data} />
         </CollapsibleContent>
       </Collapsible>
     </div>
