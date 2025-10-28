@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import PortalModal from "@/components/utility-components/portal-modal";
 import GetPatientInfoWithId from "./dashboard/patient-profile/getPatientInfoWithId";
+import MultiStepForm from "./dashboard/uploadTesting/page";
 
 
 export default function DashboardPage() {
@@ -75,6 +76,7 @@ export default function DashboardPage() {
           <GetPatientInfoWithId patient_id={patientId} admission_id={admissionId} />
         </PortalModal>
       )}
+      <MultiStepForm/>
     </div>
   );
 }
