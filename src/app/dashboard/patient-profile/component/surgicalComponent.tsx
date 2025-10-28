@@ -341,32 +341,28 @@ export default function SurgicalComponent({ surgical_data }: Props) {
       <Table className="min-w-[900px] md:min-w-[1000px] lg:min-w-[1200px] text-sm">
         <TableHeader>
           <TableRow className="bg-gradient-to-r from-blue-100 to-blue-200/70 text-gray-800 text-center">
-            <TableHead>ID</TableHead>
             <TableHead>Surgery Name</TableHead>
             <TableHead>Operation Date</TableHead>
-            <TableHead>Anesthesia</TableHead>
-            <TableHead>Complications</TableHead>
             <TableHead>Procedure Notes</TableHead>
+            <TableHead>Complications</TableHead>
+            <TableHead>Challenges</TableHead>
+            <TableHead>Anesthesia</TableHead>
             <TableHead>Post-Op Recovery</TableHead>
             <TableHead>Recovery Notes</TableHead>
-            <TableHead>Challenges</TableHead>
-            <TableHead>Remarks</TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
           {surgical_data.map((record) => (
             <TableRow key={record.surgical.id} className="bg-blue-50 hover:bg-blue-100 text-center transition-all">
-              <TableCell>{record.surgical.id}</TableCell>
               <TableCell>{record.surgery_name}</TableCell>
               <TableCell>{record.surgical.operation_date}</TableCell>
+              <TableCell>{record.surgical.procedure_notes}</TableCell>
+              <TableCell>{record.surgical.challenges_during_surgery}</TableCell>
               <TableCell>{record.surgical.nature_of_anesthesia}</TableCell>
               <TableCell>{record.surgical.complications}</TableCell>
-              <TableCell>{record.surgical.procedure_notes}</TableCell>
               <TableCell>{record.surgical.post_operative_recovery}</TableCell>
               <TableCell>{record.surgical.post_operative_recovery_notes}</TableCell>
-              <TableCell>{record.surgical.challenges_during_surgery}</TableCell>
-              <TableCell>{record.surgical.remarks}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -27,15 +27,13 @@ export default function PatientDetails({ patient, admissionData }: PatientDetail
         <div className="col-span-3 sm:grid-cols-1 md:grid-cols-2 flex">
           <PatientInfo
             label="Hospital Name"
-
             value={admissionData?.hospital_name}
           /></div>
       </div>
-      
+
     </div>
   );
 }
-
 function PatientInfo({
   label,
   value,
@@ -45,13 +43,11 @@ function PatientInfo({
   className?: string;
 }) {
   if (value === undefined || value === null) return null;
-
   return (
     <div>
       <div>
-      <span >{label}:</span> <span className="font-semibold">{value}</span>
+        <span >{label}:</span> <span className="font-semibold">{value}</span>
       </div>
-        
     </div>
   );
 }

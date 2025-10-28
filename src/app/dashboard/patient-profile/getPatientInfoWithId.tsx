@@ -99,14 +99,14 @@ export default function GetPatientInfoWithId({
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-100 text-gray-800">
- 
+
       <div
         className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(147,197,253,0.4),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(191,219,254,0.4),transparent_50%)]"
         style={{ animation: "slow-pulse 8s ease-in-out infinite" }}
       ></div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-       
+
         <div className="relative p-3 rounded-2xl bg-white/70 backdrop-blur-md border border-white/40 shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden">
           <div
             className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(147,197,253,0.4),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(191,219,254,0.4),transparent_50%)]"
@@ -143,9 +143,8 @@ export default function GetPatientInfoWithId({
             </TabsContent>
           </Tabs>
         </div>
-
         <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-3xl  border border-blue-200/50 backdrop-blur-lg p-6 space-y-6 overflow-x-auto">
-                    <PatientFilesList postOps={postOpsData} />
+          <PatientFilesList postOps={postOpsData} />
         </div>
       </div>
     </div>

@@ -134,7 +134,7 @@ export default function PatientFilesList({ postOps }: Props) {
 
   if (loading) return <p>Loading files...</p>;
   if (!records || records.length === 0) return <p>No files available.</p>;
-
+  
   return (
     <div>
       <h2 className="text-lg font-semibold text-blue-700 mb-2">List of Docs</h2>
