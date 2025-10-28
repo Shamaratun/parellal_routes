@@ -5,6 +5,7 @@ import { X, Plus } from "lucide-react";
 import { z } from "zod";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { uploadToDriveAction } from "./api";
+import Image from "next/image";
 
 // ------------------- ZOD Schema -------------------
 export const fileUploadSchema = z.object({
@@ -35,9 +36,18 @@ export interface UploadedFile {
   drive_file_id?: string;
   url?: string;
 }
+export interface UploadResponseData {
+  fileupload: {
+    file_name: string;
+    file_type: string;
+    document_type: string;
+    drive_file_id: string;
+    remarks?: string | null;
+  }[];
+}
 
 export interface FileUploadFormRef {
-  uploadFiles: () => Promise<{ success: boolean; data?: any }>;
+  uploadFiles: () => Promise<{ success: boolean; data?: UploadResponseData }>;
   getFiles: () => UploadedFile[];
   clearFiles: () => void;
 }
@@ -170,7 +180,7 @@ const FileUploadForm = forwardRef<FileUploadFormRef, FileUploadFormProps>(({ hid
 
               {/* ---------- File Preview ---------- */}
               {f.type.startsWith("image/") ? (
-                <img src={f.preview} alt={f.name} className="max-h-40 w-full object-contain rounded" />
+                <Image src={f.preview} alt={f.name} className="max-h-40 w-full object-contain rounded" />
               ) : f.type === "application/pdf" ? (
                 <iframe src={f.preview} className="w-full h-40" title={f.name} />
               ) : f.type.startsWith("video/") ? (

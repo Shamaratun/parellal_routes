@@ -223,11 +223,22 @@ interface Props {
 
 const joinOrNA = (arr?: string[]) => (arr && arr.length > 0 ? arr.join(", ") : "--");
 
-const getFieldValue = (rec: PreOpsData, key: string) => {
-  if (key === "remarks") return Array.isArray(rec.remarks) ? rec.remarks.join(", ") : rec.remarks ?? "--";
-  if (key === "co_morbidities_id" || key === "diagnosis_id") return joinOrNA((rec as any)[key]);
+const getFieldValue = <K extends keyof PreOpsData>(rec: PreOpsData, key: K): string => {
+  if (key === "remarks") {
+    return Array.isArray(rec.remarks)
+      ? rec.remarks.join(", ")
+      : rec.remarks ?? "--";
+  }
+
+  if (key === "co_morbidities_id" || key === "diagnosis_id") {
+    const arr = rec[key];
+    return Array.isArray(arr) ? joinOrNA(arr as string[]) : "--";
+  }
+
   if (key === "surgical_history") return rec.surgical_history ?? "--";
-  return (rec as any)[key] ?? "--";
+
+  const value = rec[key];
+  return (typeof value === "string" || typeof value === "number") ? String(value) : "--";
 };
 
 export default function MedicalComponent({ pre_ops_data }: Props) {
@@ -239,14 +250,13 @@ export default function MedicalComponent({ pre_ops_data }: Props) {
     );
   }
 
-  const fields = [
-    // { label: "Rec.ID", key: "id" },
-    { label: "Co-morbidities", key: "co_morbidities_id" },
-    { label: "Diagnosis", key: "diagnosis_id" },
-    { label: "Surgical History", key: "surgical_history" },
-    { label: "Remarks", key: "remarks" },
-    { label: "Drug History", key: "drug_history" },
-  ];
+  const fields: { label: string; key: keyof PreOpsData }[] = [
+  { label: "Co-morbidities", key: "co_morbidities_id" },
+  { label: "Diagnosis", key: "diagnosis_id" },
+  { label: "Surgical History", key: "surgical_history" },
+  { label: "Remarks", key: "remarks" },
+  { label: "Drug History", key: "drug_history" },
+];
 
   return (
     <div className="overflow-x-auto">

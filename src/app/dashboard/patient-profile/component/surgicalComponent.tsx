@@ -341,9 +341,21 @@ interface Props {
   surgical_data: SurgicalRecord[];
 }
 
-const getFieldValue = (record: SurgicalRecord, field: { key: string; nested?: string }) => {
-  if (field.nested) return (record as any)[field.nested]?.[field.key] || "---";
-  return (record as any)[field.key] || "---";
+
+
+
+type NestedRecord = Record<string, unknown>;
+
+const getFieldValue = (
+  record: SurgicalRecord,
+  field: { key: string; nested?: string }
+): string => {
+  if (field.nested) {
+    const nestedObj = record[field.nested as keyof SurgicalRecord] as NestedRecord | undefined;
+    return (nestedObj?.[field.key] as string | undefined) ?? "---";
+  }
+
+  return (record[field.key as keyof SurgicalRecord] as string | undefined) ?? "---";
 };
 
 export default function SurgicalComponent({ surgical_data }: Props) {

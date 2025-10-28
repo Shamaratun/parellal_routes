@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 interface MultiStepFormData {
   patientName: string;
   patientAge: number;
-  fileupload?: any[];
+  fileupload?: unknown[];
 }
 
 const MultiStepForm = () => {
@@ -47,7 +47,7 @@ const MultiStepForm = () => {
 
       // 🔹 Console-এ সব file info including drive_file_id দেখাবে
       console.log("✅ Final submitted data:", finalData);
-      finalData.fileupload.forEach((f: { file_name: any; drive_file_id: any; }) => {
+      finalData.fileupload.forEach((f: { file_name: unknown; drive_file_id: unknown; }) => {
         console.log(`File: ${f.file_name}, Drive File ID: ${f.drive_file_id}`);
       });
 

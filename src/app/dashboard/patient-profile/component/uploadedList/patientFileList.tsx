@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { PostOpsData } from "../../type";
 import { downloadFileById } from "@/lib/actions/fileApi"; // your new fetch-based file API
+import Image from "next/image";
 
 interface Props {
   postOps: PostOpsData[];
@@ -103,7 +104,7 @@ export default function PatientFilesList({ postOps }: Props) {
           {!previewUrl ? (
             <p className="text-white">Loading preview...</p>
           ) : previewType.startsWith("image/") ? (
-            <img
+            <Image
               src={previewUrl}
               alt="Preview"
               className="max-h-[90vh] max-w-[90vw] rounded-xl shadow-xl"
