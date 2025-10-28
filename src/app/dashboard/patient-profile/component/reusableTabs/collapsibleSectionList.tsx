@@ -69,12 +69,11 @@ import {
 import SurgicalComponent from "../surgicalComponent";
 import MedicalComponent from "../medicalComponent";
 import InvestigationComponent from "../investigationComponent";
-import { PreOpsData, SurgicalData } from "../../type";
+import { PreOpsData,SurgicalRecord } from "../../type";
 import React from "react";
 
 interface MedicalHistoryTabProps {
-  post_ops_data: SurgicalData[];
-  surgical_data: SurgicalData[];
+  surgical_data: SurgicalRecord[];
   pre_ops_data: PreOpsData[];
 }
 
@@ -101,7 +100,7 @@ export default function CollapsibleSectionList({
         <CollapsibleContent className="w-full scroll-auto">
           <SurgicalComponent
             surgical_data={surgical_data}
-            pre_ops_data={pre_ops_data}
+           
           />
         </CollapsibleContent>
       </Collapsible>

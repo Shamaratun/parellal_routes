@@ -45,20 +45,19 @@ export interface AdmissionData {
 }
 
 
-export interface SurgicalData {
-  id?: number;
-  bed_id?: string;
-  operation_id?: string[];
-  operation_date?: string;
-  procedure_notes?: string;
-  challenges_during_surgery?: string;
-  complications?: string;
-  nature_of_anesthesia?: string;
-  post_operative_recovery?: string;
-  post_operative_recovery_notes?: string;
-  remarks?: string;
-   surgical_history?: string;
-
+export interface SurgicalRecord {
+  surgical: {
+    id: number;
+    operation_date: string;
+    nature_of_anesthesia: string;
+    complications: string;
+    procedure_notes: string;
+    post_operative_recovery: string;
+    post_operative_recovery_notes: string;
+    challenges_during_surgery: string;
+    remarks: string;
+  };
+  surgery_name: string;
 }
 export interface PostOpsData {
   id: number;
