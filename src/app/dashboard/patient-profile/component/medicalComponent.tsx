@@ -205,41 +205,179 @@
 //     </div>
 //   );
 // }
+// "use client";
+
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table";
+// import { Drug, PreOpsData } from "../type";
+
+// interface Props {
+//   pre_ops_data: PreOpsData[];
+// }
+
+// const joinOrNA = (arr?: string[]) => (arr && arr.length > 0 ? arr.join(", ") : "--");
+
+// const getFieldValue = <K extends keyof PreOpsData>(rec: PreOpsData, key: K): string => {
+//   if (key === "remarks") {
+//     return Array.isArray(rec.remarks)
+//       ? rec.remarks.join(", ")
+//       : rec.remarks ?? "--";
+//   }
+
+//   if (key === "co_morbidities_id" || key === "diagnosis_id") {
+//     const arr = rec[key];
+//     return Array.isArray(arr) ? joinOrNA(arr as string[]) : "--";
+//   }
+
+//   if (key === "surgical_history") return rec.surgical_history ?? "--";
+
+//   const value = rec[key];
+//   return (typeof value === "string" || typeof value === "number") ? String(value) : "--";
+// };
+
+// export default function MedicalComponent({ pre_ops_data }: Props) {
+//   if (!pre_ops_data || pre_ops_data.length === 0) {
+//     return (
+//       <div className="bg-gradient-to-br from-blue-50 to-green-50 p-3 rounded-3xl shadow-xl border border-blue-200/50 text-gray-500 italic text-center">
+//         No medical records available.
+//       </div>
+//     );
+//   }
+
+//   const fields: { label: string; key: keyof PreOpsData }[] = [
+//   { label: "Co-morbidities", key: "co_morbidities_id" },
+//   { label: "Diagnosis", key: "diagnosis_id" },
+//   { label: "Surgical History", key: "surgical_history" },
+//   { label: "Remarks", key: "remarks" },
+//   { label: "Drug History", key: "drug_history" },
+// ];
+
+//   return (
+//     <div className="overflow-x-auto">
+//       <div className="flex flex-col lg:flex-row gap-4 min-w-[320px]">
+//         <div className="flex-1 bg-white rounded-2xl shadow border border-blue-100 overflow-x-auto">
+//           <Table className="w-full min-w-[320px] table-auto">
+//             <TableHeader>
+//               <TableRow className="bg-gradient-to-r from-blue-100 to-blue-200/50 text-gray-800 text-center">
+//                 <TableHead className="w-32 text-left pl-3 break-words">Rec Id</TableHead>
+//                 {pre_ops_data.map((rec) => (
+//                   <TableHead
+//                     key={rec.id}
+//                     className="w-48 text-center px-2 break-words whitespace-normal">
+//                     {rec.id}
+//                   </TableHead>
+//                 ))}
+//               </TableRow>
+//             </TableHeader>
+
+//             <TableBody>
+//               {fields.map((field) => (
+//                 <TableRow key={field.key} className="align-top hover:bg-blue-100 transition">
+//                   <TableCell className="font-semibold bg-blue-100 text-gray-800 text-left pl-3 w-32 break-words">
+//                     {field.label}
+//                   </TableCell>
+//                   {pre_ops_data.map((rec) => {
+//                     if (field.key === "drug_history") {
+//                       // Parse drug_history safely
+//                       const drugs: Drug[] =
+//                         rec.drug_history
+//                           ?.map((d) => {
+//                             try {
+//                               return JSON.parse(d) as Drug;
+//                             } catch {
+//                               return undefined;
+//                             }
+//                           })
+//                           .filter((d): d is Drug => !!d) ?? [];
+
+//                       return (
+//                         <TableCell
+//                           key={rec.id + field.key}
+//                           className="text-center text-gray-700 px-2 break-words whitespace-normal w-48 align-top"
+//                         >
+//                           {drugs.length > 0 ? (
+//                             <Table className="min-w-full text-[14px] border border-gray-200 rounded-lg">
+//                               <TableHeader>
+//                                 <TableRow className="bg-blue-200 text-gray-800 font-semibold">
+//                                   <TableHead className="p-1 text-left">Drug Name</TableHead>
+//                                   <TableHead className="p-1 text-left">Dose</TableHead>
+//                                   <TableHead className="p-1 text-left">Frequency</TableHead>
+//                                 </TableRow>
+//                               </TableHeader>
+//                               <TableBody>
+//                                 {drugs.map((drug, idx) => (
+//                                   <TableRow
+//                                     key={idx}
+//                                     className="border-t hover:bg-blue-100 transition"
+//                                   >
+//                                     <TableCell className="p-1">{drug.drug_name}</TableCell>
+//                                     <TableCell className="p-1">{drug.dose}</TableCell>
+//                                     <TableCell className="p-1">{drug.frequency}</TableCell>
+//                                   </TableRow>
+//                                 ))}
+//                               </TableBody>
+//                             </Table>
+//                           ) : (
+//                             <span className="text-gray-500 italic">No drugs</span>
+//                           )}
+//                         </TableCell>
+//                       );
+//                     }
+
+//                     return (
+//                       <TableCell
+//                         key={rec.id + field.key}
+//                         className="text-center text-gray-700 px-2 break-words whitespace-normal w-48 align-top"
+//                       >
+//                         {getFieldValue(rec, field.key)}
+//                       </TableCell>
+//                     );
+//                   })}
+//                 </TableRow>
+//               ))}
+//             </TableBody>
+//           </Table>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 "use client";
 
+import React, { useMemo } from "react";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Drug, PreOpsData } from "../type";
+  createColumnHelper,
+  ColumnDef,
+} from "@tanstack/react-table";
 
+import { Drug, PreOpsData } from "../type";
+import { DataTable } from "./reusableTabs/dataTable";
+
+// ✅ Helper functions
+const joinOrNA = (arr?: string[]) =>
+  arr && arr.length > 0 ? arr.join(", ") : "--";
+
+const parseDrugs = (list?: string[]): Drug[] =>
+  list
+    ?.map((d) => {
+      try {
+        return JSON.parse(d) as Drug;
+      } catch {
+        return undefined;
+      }
+    })
+    .filter((d): d is Drug => !!d) ?? [];
+
+// ✅ Component
 interface Props {
   pre_ops_data: PreOpsData[];
 }
-
-const joinOrNA = (arr?: string[]) => (arr && arr.length > 0 ? arr.join(", ") : "--");
-
-const getFieldValue = <K extends keyof PreOpsData>(rec: PreOpsData, key: K): string => {
-  if (key === "remarks") {
-    return Array.isArray(rec.remarks)
-      ? rec.remarks.join(", ")
-      : rec.remarks ?? "--";
-  }
-
-  if (key === "co_morbidities_id" || key === "diagnosis_id") {
-    const arr = rec[key];
-    return Array.isArray(arr) ? joinOrNA(arr as string[]) : "--";
-  }
-
-  if (key === "surgical_history") return rec.surgical_history ?? "--";
-
-  const value = rec[key];
-  return (typeof value === "string" || typeof value === "number") ? String(value) : "--";
-};
 
 export default function MedicalComponent({ pre_ops_data }: Props) {
   if (!pre_ops_data || pre_ops_data.length === 0) {
@@ -250,101 +388,79 @@ export default function MedicalComponent({ pre_ops_data }: Props) {
     );
   }
 
-  const fields: { label: string; key: keyof PreOpsData }[] = [
-  { label: "Co-morbidities", key: "co_morbidities_id" },
-  { label: "Diagnosis", key: "diagnosis_id" },
-  { label: "Surgical History", key: "surgical_history" },
-  { label: "Remarks", key: "remarks" },
-  { label: "Drug History", key: "drug_history" },
-];
+  const columnHelper = createColumnHelper<PreOpsData>();
 
-  return (
-    <div className="overflow-x-auto">
-      <div className="flex flex-col lg:flex-row gap-4 min-w-[320px]">
-        <div className="flex-1 bg-white rounded-2xl shadow border border-blue-100 overflow-x-auto">
-          <Table className="w-full min-w-[320px] table-auto">
-            <TableHeader>
-              <TableRow className="bg-gradient-to-r from-blue-100 to-blue-200/50 text-gray-800 text-center">
-                <TableHead className="w-32 text-left pl-3 break-words">Rec Id</TableHead>
-                {pre_ops_data.map((rec) => (
-                  <TableHead
-                    key={rec.id}
-                    className="w-48 text-center px-2 break-words whitespace-normal">
-                    {rec.id}
-                  </TableHead>
-                ))}
-              </TableRow>
-            </TableHeader>
+  const columns = useMemo<ColumnDef<PreOpsData, any>[]>(
+    () => [
+      columnHelper.accessor("id", {
+        header: "Record ID",
+        cell: (info) => info.getValue() ?? "--",
+      }),
 
-            <TableBody>
-              {fields.map((field) => (
-                <TableRow key={field.key} className="align-top hover:bg-blue-100 transition">
-                  <TableCell className="font-semibold bg-blue-100 text-gray-800 text-left pl-3 w-32 break-words">
-                    {field.label}
-                  </TableCell>
-                  {pre_ops_data.map((rec) => {
-                    if (field.key === "drug_history") {
-                      // Parse drug_history safely
-                      const drugs: Drug[] =
-                        rec.drug_history
-                          ?.map((d) => {
-                            try {
-                              return JSON.parse(d) as Drug;
-                            } catch {
-                              return undefined;
-                            }
-                          })
-                          .filter((d): d is Drug => !!d) ?? [];
+      columnHelper.accessor("co_morbidities_id", {
+        header: "Co-morbidities",
+        cell: (info) => {
+          const val = info.getValue();
+          return Array.isArray(val) ? joinOrNA(val as string[]) : "--";
+        },
+      }),
 
-                      return (
-                        <TableCell
-                          key={rec.id + field.key}
-                          className="text-center text-gray-700 px-2 break-words whitespace-normal w-48 align-top"
-                        >
-                          {drugs.length > 0 ? (
-                            <Table className="min-w-full text-[14px] border border-gray-200 rounded-lg">
-                              <TableHeader>
-                                <TableRow className="bg-blue-200 text-gray-800 font-semibold">
-                                  <TableHead className="p-1 text-left">Drug Name</TableHead>
-                                  <TableHead className="p-1 text-left">Dose</TableHead>
-                                  <TableHead className="p-1 text-left">Frequency</TableHead>
-                                </TableRow>
-                              </TableHeader>
-                              <TableBody>
-                                {drugs.map((drug, idx) => (
-                                  <TableRow
-                                    key={idx}
-                                    className="border-t hover:bg-blue-100 transition"
-                                  >
-                                    <TableCell className="p-1">{drug.drug_name}</TableCell>
-                                    <TableCell className="p-1">{drug.dose}</TableCell>
-                                    <TableCell className="p-1">{drug.frequency}</TableCell>
-                                  </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
-                          ) : (
-                            <span className="text-gray-500 italic">No drugs</span>
-                          )}
-                        </TableCell>
-                      );
-                    }
+      columnHelper.accessor("diagnosis_id", {
+        header: "Diagnosis",
+        cell: (info) => {
+          const val = info.getValue();
+          return Array.isArray(val) ? joinOrNA(val as string[]) : "--";
+        },
+      }),
 
-                    return (
-                      <TableCell
-                        key={rec.id + field.key}
-                        className="text-center text-gray-700 px-2 break-words whitespace-normal w-48 align-top"
-                      >
-                        {getFieldValue(rec, field.key)}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-    </div>
+      columnHelper.accessor("surgical_history", {
+        header: "Surgical History",
+        cell: (info) => info.getValue() ?? "--",
+      }),
+
+      columnHelper.accessor("remarks", {
+        header: "Remarks",
+        cell: (info) => {
+          const val = info.getValue();
+          return Array.isArray(val) ? val.join(", ") : val ?? "--";
+        },
+      }),
+
+      // ✅ Nested Drug History
+      columnHelper.accessor("drug_history", {
+        header: "Drug History",
+        cell: ({ getValue }) => {
+          const drugs = parseDrugs(getValue() as string[]);
+          if (drugs.length === 0)
+            return <span className="text-gray-500 italic">No drugs</span>;
+
+          return (
+            <div className="border border-gray-200 rounded-lg p-2 bg-gray-50">
+              <table className="min-w-full text-sm text-left">
+                <thead className="border-b text-gray-700 font-semibold">
+                  <tr>
+                    <th className="pr-3">Drug Name</th>
+                    <th className="pr-3">Dose</th>
+                    <th>Frequency</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {drugs.map((drug, idx) => (
+                    <tr key={idx} className="border-t">
+                      <td className="pr-3">{drug.drug_name || "---"}</td>
+                      <td className="pr-3">{drug.dose || "---"}</td>
+                      <td>{drug.frequency || "---"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
+        },
+      }),
+    ],
+    [columnHelper]
   );
+
+  return <DataTable data={pre_ops_data} columns={columns} title="Pre-Ops Records" />;
 }
