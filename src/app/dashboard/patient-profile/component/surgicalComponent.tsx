@@ -761,7 +761,8 @@ import React, { useMemo } from "react";
 import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
 
 import { SurgicalRecord } from "../type";
-import { DataTable } from "./reusableTabs/dataTable";
+import { SmartTable } from "@/components/reusable-ui-components/smart-table";
+
 
 interface Props {
   surgical_data: SurgicalRecord[];
@@ -812,5 +813,5 @@ export default function SurgicalComponent({ surgical_data }: Props) {
     [columnHelper]
   );
 
-  return <DataTable data={surgical_data} columns={columns} title="Surgical Records" />;
+  return <SmartTable data={surgical_data} columns={columns} title="Surgical Records" />;
 }

@@ -357,9 +357,9 @@ import {
 } from "@tanstack/react-table";
 
 import { Drug, PreOpsData } from "../type";
-import { DataTable } from "./reusableTabs/dataTable";
+import { SmartTable } from "@/components/reusable-ui-components/smart-table";
 
-// ✅ Helper functions
+
 const joinOrNA = (arr?: string[]) =>
   arr && arr.length > 0 ? arr.join(", ") : "--";
 
@@ -374,7 +374,7 @@ const parseDrugs = (list?: string[]): Drug[] =>
     })
     .filter((d): d is Drug => !!d) ?? [];
 
-// ✅ Component
+
 interface Props {
   pre_ops_data: PreOpsData[];
 }
@@ -462,5 +462,5 @@ export default function MedicalComponent({ pre_ops_data }: Props) {
     [columnHelper]
   );
 
-  return <DataTable data={pre_ops_data} columns={columns} title="Pre-Ops Records" />;
+  return <SmartTable data={pre_ops_data} columns={columns} title="Pre-Ops Records" />;
 }

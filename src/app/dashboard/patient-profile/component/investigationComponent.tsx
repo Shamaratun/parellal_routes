@@ -193,14 +193,9 @@
 // }
 "use client";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import React, { useMemo } from "react";
+import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
+import { SmartTable } from "@/components/reusable-ui-components/smart-table";
 import { PreOpsData } from "../type";
 
 interface Props {
@@ -208,54 +203,74 @@ interface Props {
 }
 
 export default function InvestigationComponent({ pre_ops_data }: Props) {
+  if (!pre_ops_data || pre_ops_data.length === 0) {
+    return (
+      <div className="bg-gradient-to-br from-blue-50 to-green-50 p-3 rounded-3xl shadow-xl border border-blue-200/50 text-gray-500 italic text-center">
+        No investigation records available.
+      </div>
+    );
+  }
 
-  const allInvestigations = pre_ops_data.flatMap((rec) =>
-    rec.investigations && rec.investigations.length > 0
-      ? rec.investigations.map((inv) => ({
-          investigation_name: inv.investigation_name,
-          investigation_report_result: inv.investigation_report_result || "N/A",
-        }))
-      : []
-  );
+  const formattedData = pre_ops_data.map((rec) => {
+    const grouped: Record<string, string[]> = {};
+
+    // Ensure investigations is always an array
+    const investigationsArray = Array.isArray(rec.investigations) ? rec.investigations : [];
+
+    investigationsArray.forEach((inv) => {
+      const name = inv.investigation_name || "---";
+      const result = inv.investigation_report_result || "N/A";
+      if (!grouped[name]) grouped[name] = [];
+      grouped[name].push(result);
+    });
+
+    const invNames = Object.keys(grouped)
+      .map((name) => `• ${name}`)
+      .join("\n");
+
+    const invReports = Object.values(grouped)
+      .map((results) => results.join(", "))
+      .join("\n");
+
+    return {
+      investigation_names: invNames || "--",
+      investigation_reports: invReports || "--",
+    };
+  });
+
+  type InvestigationSummary = {
+    investigation_names: string;
+    investigation_reports: string;
+  };
+
+  const columnHelper = createColumnHelper<InvestigationSummary>();
+
+  const columns = useMemo<ColumnDef<InvestigationSummary, any>[]>(() => [
+    columnHelper.accessor("investigation_names", {
+      header: "Investigation Names",
+      cell: (info) => (
+        <div className="whitespace-pre-wrap text-center text-gray-800">
+          {info.getValue()}
+        </div>
+      ),
+    }),
+    columnHelper.accessor("investigation_reports", {
+      header: "Report Results",
+      cell: (info) => (
+        <div className="whitespace-pre-wrap text-center text-gray-700">
+          {info.getValue()}
+        </div>
+      ),
+    }),
+  ], [columnHelper]);
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-3xl  backdrop-blur-lg  shadow-xl space-y-4">
-      {allInvestigations.length === 0 ? (
-        <p className="bg-gradient-to-br from-blue-50 to-green-50 p-3 rounded-3xl shadow-xl border border-blue-200/50 backdrop-blur-md text-center text-gray-500 italic">
-          No investigation records available.
-        </p>
-      ) : (
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-          <Table className="min-w-full text-[16px]">
-            <TableHeader>
-              <TableRow className="bg-gradient-to-r from-blue-100 to-blue-200/70 text-blue-900 text-center">
-                <TableHead className="p-4 font-semibold w-1/3">
-                  Investigation Name
-                </TableHead>
-                <TableHead className=" p-4 font-semibold w-2/3">
-                  Report Result
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-
-            <TableBody>
-              {allInvestigations.map((inv, idx) => (
-                <TableRow
-                  key={idx}
-                  className=" hover:bg-blue-100 transition text-gray-700"
-                >
-                  <TableCell className="p-4 font-medium text-gray-700">
-                    {inv.investigation_name}
-                  </TableCell>
-                  <TableCell className="p-4 text-gray-700">
-                    {inv.investigation_report_result}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      )}
+    <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-3xl p-3 shadow-xl backdrop-blur-lg">
+      <SmartTable
+        data={formattedData}
+        columns={columns}
+        title="Investigation Summary"
+      />
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
-import { ButtonDemo } from "@/app/dashboard/patient-profile/component/reusableTabs/buttonDemo";
+import { BackButton } from "@/app/dashboard/patient-profile/component/reusableTabs/backButton";
 
 interface PortalModalProps {
   isOpen: boolean;
@@ -54,7 +54,7 @@ const PortalModal: React.FC<PortalModalProps> = ({
         style={{ maxWidth }}
       >
         <div className="flex justify-between items-center  px-2 py-1 border-b border-gray-200 dark:border-gray-700">
-          <ButtonDemo/>
+          <BackButton/>
           <button
             onClick={onClose}
             className="text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition"

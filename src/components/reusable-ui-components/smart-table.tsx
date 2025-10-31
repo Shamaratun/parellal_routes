@@ -28,7 +28,7 @@ interface DataTableProps<T extends object> {
   title?: string;
 }
 
-export function DataTable<T extends object>({
+export function SmartTable<T extends object>({
   data,
   columns,
   title,
@@ -61,7 +61,7 @@ export function DataTable<T extends object>({
         <h2 className="text-lg font-semibold text-gray-700">{title}</h2>
       )}
 
-      {/* Search + Page size */}
+    
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <input
@@ -88,7 +88,7 @@ export function DataTable<T extends object>({
             }
             className="border border-blue-200 rounded-lg px-2 py-1 bg-white shadow-sm focus:ring-2 focus:ring-blue-300"
           >
-            {[5, 10, 20, 50].map((s) => (
+            {[2, 10, 20, 50].map((s) => (
               <option key={s} value={s}>
                 {s}
               </option>
@@ -97,7 +97,7 @@ export function DataTable<T extends object>({
         </div>
       </div>
 
-      {/* Table */}
+  
       <div className="overflow-x-auto rounded-2xl border border-blue-100 shadow-xl bg-gradient-to-br from-white to-blue-50">
         <Table className="min-w-[900px] text-md">
           <TableHeader>

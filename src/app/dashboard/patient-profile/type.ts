@@ -63,13 +63,16 @@ export interface PostOpsData {
   id: number;
   patient_id: number;
   admission_id: number;
+  fileid: string;
+  name: string;
   file_name?: string;
   document_type?: string;
   insert_date?: string;
   dt?: string;
-  file_type?: string; 
+  file_type?: string;
   remarks?: string;
-
+  drive_file_id?: string;// add omar
+  mime_type: string;
 }
 export type PreOpsData = {
   id: number;
@@ -84,7 +87,7 @@ export type PreOpsData = {
   remarks?: string | null;
   investigations?: Investigation[] | null;
   operation_id?: string[];
- 
+
 }
 export interface Drug {
   dose: string;

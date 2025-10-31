@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 
-export function ButtonDemo() {
+export function BackButton() {
     const router = useRouter()
   return (
     <div className="flex flex-wrap items-center gap-2 md:flex-row">
