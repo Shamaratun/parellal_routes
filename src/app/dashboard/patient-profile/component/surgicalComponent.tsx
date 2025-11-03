@@ -436,7 +436,9 @@
 //     </div>
 //   );
 // }
-// "use client"; tanstack yaaaa boro code
+
+// tanstack long code with all logic together
+// "use client"; 
 
 // import React, { useMemo, useState } from "react";
 // import {
@@ -753,15 +755,12 @@
 //       </div>
 //     </div>
 //   );
-// }
-
-"use client";
+// }"use client";
 
 import React, { useMemo } from "react";
-import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
-
-import { SurgicalRecord } from "../type";
+import { createColumnHelper } from "@tanstack/react-table";
 import { SmartTable } from "@/components/reusable-ui-components/smart-table";
+import { SurgicalRecord } from "../type";
 
 
 interface Props {
@@ -769,49 +768,48 @@ interface Props {
 }
 
 export default function SurgicalComponent({ surgical_data }: Props) {
-  if (!surgical_data || surgical_data.length === 0) {
-    return (
-      <div className="text-center text-gray-500 italic">
-        No surgical records available.
-      </div>
-    );
-  }
-
   const columnHelper = createColumnHelper<SurgicalRecord>();
 
-  const columns = useMemo<ColumnDef<SurgicalRecord, any>[]>(
+  // ✅ Columns (type-safe but easy build)
+  const columns = useMemo(
     () => [
       columnHelper.accessor("surgery_name", {
         header: "Surgery Name",
-        cell: (info) => info.getValue() || "---",
+        cell: (info) => info.getValue() ?? "---",
       }),
-      columnHelper.accessor("surgical.operation_date", {
+      columnHelper.accessor((row) => row.surgical?.operation_date ?? "---", {
+        id: "operation_date",
         header: "Operation Date",
-        cell: (info) => info.getValue() || "---",
       }),
-      columnHelper.accessor("surgical.procedure_notes", {
+      columnHelper.accessor((row) => row.surgical?.procedure_notes ?? "---", {
+        id: "procedure_notes",
         header: "Procedure Notes",
-        cell: (info) => info.getValue() || "---",
       }),
-      columnHelper.accessor("surgical.nature_of_anesthesia", {
+      columnHelper.accessor((row) => row.surgical?.nature_of_anesthesia ?? "---", {
+        id: "nature_of_anesthesia",
         header: "Anesthesia",
-        cell: (info) => info.getValue() || "---",
       }),
-      columnHelper.accessor("surgical.remarks", {
+      columnHelper.accessor((row) => row.surgical?.remarks ?? "---", {
+        id: "remarks",
         header: "Remarks",
-        cell: (info) => info.getValue() || "---",
       }),
-      columnHelper.accessor("surgical.complications", {
+      columnHelper.accessor((row) => row.surgical?.complications ?? "---", {
+        id: "complications",
         header: "Complications",
-        cell: (info) => info.getValue() || "---",
       }),
-      columnHelper.accessor("surgical.challenges_during_surgery", {
+      columnHelper.accessor((row) => row.surgical?.challenges_during_surgery ?? "---", {
+        id: "challenges",
         header: "Challenges",
-        cell: (info) => info.getValue() || "---",
       }),
     ],
     [columnHelper]
   );
 
-  return <SmartTable data={surgical_data} columns={columns} title="Surgical Records" />;
+  return (
+    <SmartTable
+      data={surgical_data}
+      columns={columns}
+      
+    />
+  );
 }

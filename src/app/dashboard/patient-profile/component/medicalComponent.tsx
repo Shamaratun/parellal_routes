@@ -351,17 +351,29 @@
 "use client";
 
 import React, { useMemo } from "react";
-import {
-  createColumnHelper,
-  ColumnDef,
-} from "@tanstack/react-table";
-
-import { Drug, PreOpsData } from "../type";
+import { createColumnHelper } from "@tanstack/react-table";
 import { SmartTable } from "@/components/reusable-ui-components/smart-table";
 
+interface Drug {
+  drug_name: string;
+  dose: string;
+  frequency: string;
+}
 
-const joinOrNA = (arr?: string[]) =>
-  arr && arr.length > 0 ? arr.join(", ") : "--";
+interface PreOpsData {
+  id: string;
+  co_morbidities_id?: string[];
+  diagnosis_id?: string[];
+  surgical_history?: string;
+  remarks?: string | string[];
+  drug_history?: string[]; // JSON strings representing Drug[]
+}
+
+interface Props {
+  pre_ops_data: PreOpsData[];
+}
+
+const joinOrNA = (arr?: string[]) => (arr && arr.length > 0 ? arr.join(", ") : "--");
 
 const parseDrugs = (list?: string[]): Drug[] =>
   list
@@ -374,63 +386,38 @@ const parseDrugs = (list?: string[]): Drug[] =>
     })
     .filter((d): d is Drug => !!d) ?? [];
 
-
-interface Props {
-  pre_ops_data: PreOpsData[];
-}
-
 export default function MedicalComponent({ pre_ops_data }: Props) {
-  if (!pre_ops_data || pre_ops_data.length === 0) {
-    return (
-      <div className="bg-gradient-to-br from-blue-50 to-green-50 p-3 rounded-3xl shadow-xl border border-blue-200/50 text-gray-500 italic text-center">
-        No medical records available.
-      </div>
-    );
-  }
-
   const columnHelper = createColumnHelper<PreOpsData>();
 
-  const columns = useMemo<ColumnDef<PreOpsData, any>[]>(
+  const columns = useMemo(
     () => [
       columnHelper.accessor("id", {
         header: "Record ID",
         cell: (info) => info.getValue() ?? "--",
       }),
-
       columnHelper.accessor("co_morbidities_id", {
         header: "Co-morbidities",
-        cell: (info) => {
-          const val = info.getValue();
-          return Array.isArray(val) ? joinOrNA(val as string[]) : "--";
-        },
+        cell: (info) => joinOrNA(info.getValue()),
       }),
-
       columnHelper.accessor("diagnosis_id", {
         header: "Diagnosis",
-        cell: (info) => {
-          const val = info.getValue();
-          return Array.isArray(val) ? joinOrNA(val as string[]) : "--";
-        },
+        cell: (info) => joinOrNA(info.getValue()),
       }),
-
       columnHelper.accessor("surgical_history", {
         header: "Surgical History",
         cell: (info) => info.getValue() ?? "--",
       }),
-
       columnHelper.accessor("remarks", {
         header: "Remarks",
         cell: (info) => {
           const val = info.getValue();
-          return Array.isArray(val) ? val.join(", ") : val ?? "--";
+          return Array.isArray(val) ? joinOrNA(val) : val ?? "--";
         },
       }),
-
-      // ✅ Nested Drug History
       columnHelper.accessor("drug_history", {
         header: "Drug History",
         cell: ({ getValue }) => {
-          const drugs = parseDrugs(getValue() as string[]);
+          const drugs = parseDrugs(getValue());
           if (drugs.length === 0)
             return <span className="text-gray-500 italic">No drugs</span>;
 
@@ -462,5 +449,8 @@ export default function MedicalComponent({ pre_ops_data }: Props) {
     [columnHelper]
   );
 
-  return <SmartTable data={pre_ops_data} columns={columns} title="Pre-Ops Records" />;
+  return (   
+      <SmartTable data={pre_ops_data} columns={columns}  />    
+  );
 }
+

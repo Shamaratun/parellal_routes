@@ -5,8 +5,6 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import PortalModal from "@/components/utility-components/portal-modal";
 import GetPatientInfoWithId from "./dashboard/patient-profile/getPatientInfoWithId";
-import Preview from "./dashboard/patient-profile/component/uploadTesting/list";
-
 
 
 export default function DashboardPage() {

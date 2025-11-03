@@ -14,11 +14,10 @@ import {
 import { getProfileAction } from "../../../lib/actions/profileAction";
 import PatientDetails from "./patientBasicCard";
 import RecentVisitComponent from "./component/recentVisitComponent";
-import PatientFilesList from "./component/uploadedList/patientFileList";
 import PatientTabs from "./component/reusableTabs/patientTab";
 import AdmissionRelease from "./component/admissionRelease";
 import MedicalHistoryTab from "./component/reusableTabs/medicalHistoryTab";
-import FileList from "./component/uploadTesting/list";
+import ListOfDocs from "./component/uploadedList/listOfDocs";
 
 interface GetPatientInfoWithIdProps {
   patient_id: number;
@@ -144,7 +143,7 @@ export default function GetPatientInfoWithId({
           </Tabs>
         </div>
         <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-3xl  border border-blue-200/50 backdrop-blur-lg pt-6 space-y-6 overflow-x-auto">
-         <FileList postOpsData={postOpsData}/>
+         <ListOfDocs postOpsData={postOpsData}/>
         </div>
       </div>
     </div>
