@@ -251,6 +251,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchFile, FileResponse } from "./api";
 import { PostOpsData } from "../../type";
+import Image from "next/image";
 
 interface Props {
   postOpsData: PostOpsData[];
@@ -370,10 +371,10 @@ export default function FileList({ postOpsData }: Props) {
 
             {/* IMAGE */}
             {previewType.startsWith("image/") && (
-              <img
+              <Image
                 src={previewSrc}
                 alt="Preview"
-                className="max-h-[80vh] mx-auto"
+                className=" h-full mx-auto"
               />
             )}
 
@@ -383,7 +384,7 @@ export default function FileList({ postOpsData }: Props) {
                 src={previewSrc}
                 controls
                 autoPlay
-                className="max-h-[80vh] mx-auto"
+                className="h-full mx-auto"
               />
             )}
 
@@ -391,7 +392,7 @@ export default function FileList({ postOpsData }: Props) {
             {previewType === "application/pdf" && (
               <iframe
                 src={previewSrc}
-                className="w-full h-[80vh]"
+                className="w-full h-full"
                 title="PDF Preview"
               ></iframe>
             )}
