@@ -47,7 +47,7 @@ export default function InvestigationComponent({ pre_ops_data, isPending = false
         description: "Pre-operative investigation results",
         columns: columns, 
         columnfilterable: false,
-        searchable: true,
+        searchable: false,
         enablePagination: true,
         pagination: {
           pageSize: 10,

@@ -773,7 +773,7 @@ export default function SurgicalComponent({
   surgical_data,
   isPending = false,
 }: Props) {
-  // ✅ Define columns that match SmartTable’s expected shape
+  
   const columns = [
     {
       accessorKey: "surgery_name",
@@ -813,7 +813,7 @@ export default function SurgicalComponent({
     },
   ];
 
-  // ✅ Optional event handlers
+
   const handleRowClick = (row: SurgicalRecord) => {
     console.log("Row clicked:", row);
   };
@@ -832,7 +832,7 @@ export default function SurgicalComponent({
         description: "Details of surgical operations performed",
         columns: columns,
         columnfilterable: false,
-        searchable: true,
+        searchable: false,
         enablePagination: true,
         pagination: {
           pageSize: 10,

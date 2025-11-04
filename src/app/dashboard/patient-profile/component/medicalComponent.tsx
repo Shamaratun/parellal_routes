@@ -16,11 +16,11 @@ interface Props {
   isPending?: boolean;
 }
 
-// Utility: join array or fallback
+
 const joinOrNA = (arr?: string[]) =>
   arr && arr.length > 0 ? arr.join(", ") : "--";
 
-// Utility: safely parse drug list
+
 const parseDrugs = (list?: string[]): Drug[] =>
   list
     ?.map((d) => {
@@ -99,7 +99,7 @@ export default function MedicalComponent({
     },
   ];
 
-  // ✅ Optional event handlers
+
   const handleRowClick = (row: PreOpsData) => {
     console.log("Row clicked:", row);
   };
@@ -118,7 +118,7 @@ export default function MedicalComponent({
         description: "Detailed pre-operative information and drug history",
         columns,
         columnfilterable: false,
-        searchable: true,
+        searchable: false,
         enablePagination: true,
         pagination: {
           pageSize: 10,
