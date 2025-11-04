@@ -123,7 +123,9 @@ export default function GetPatientInfoWithId({
             <MedicalHistoryTab
               pre_ops_data={preOpsData}
               surgical_data={surgicalData}
+              
             />
+
             <TabsContent value="recent-visits">
               <Card className="relative mt-4 shadow-md border-none bg-white/80 backdrop-blur overflow-hidden">
                 <CardContent>

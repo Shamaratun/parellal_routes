@@ -8,6 +8,7 @@ import { SurgicalRecord, PreOpsData } from "../../type";
 interface MedicalHistoryTabProps {
   surgical_data: SurgicalRecord[];
   pre_ops_data: PreOpsData[];
+  
 }
 
 export default function MedicalHistoryTab({ surgical_data, pre_ops_data }: MedicalHistoryTabProps) {
@@ -19,7 +20,9 @@ export default function MedicalHistoryTab({ surgical_data, pre_ops_data }: Medic
         <CardContent className="p-2 sm:p-6">
           <CollapsibleSectionList
             surgical_data={surgical_data}
-            pre_ops_data={pre_ops_data} />
+
+            pre_ops_data={pre_ops_data}
+            />
         </CardContent>
       </Card>
     </TabsContent>

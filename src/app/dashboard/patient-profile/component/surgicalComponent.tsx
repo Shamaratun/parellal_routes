@@ -755,61 +755,92 @@
 //       </div>
 //     </div>
 //   );
-// }"use client";
+// }
+"use client"; 
 
-import React, { useMemo } from "react";
-import { createColumnHelper } from "@tanstack/react-table";
-import { SmartTable } from "@/components/reusable-ui-components/smart-table";
+import React from "react";
+import SmartTable from "@/components/reusable-ui-components/smart-table/smart-table";
 import { SurgicalRecord } from "../type";
+
 
 
 interface Props {
   surgical_data: SurgicalRecord[];
+  isPending?: boolean;
 }
 
-export default function SurgicalComponent({ surgical_data }: Props) {
-  const columnHelper = createColumnHelper<SurgicalRecord>();
+export default function SurgicalComponent({
+  surgical_data,
+  isPending = false,
+}: Props) {
+  // ✅ Define columns that match SmartTable’s expected shape
+  const columns = [
+    {
+      accessorKey: "surgery_name",
+      header: "Surgery Name",
+      cell: ({ getValue }: any) => getValue() ?? "---",
+    },
+    {
+      accessorKey: "operation_date",
+      header: "Operation Date",
+      cell: ({ row }: any) => row.original.surgical?.operation_date ?? "---",
+    },
+    {
+      accessorKey: "procedure_notes",
+      header: "Procedure Notes",
+      cell: ({ row }: any) => row.original.surgical?.procedure_notes ?? "---",
+    },
+    {
+      accessorKey: "nature_of_anesthesia",
+      header: "Anesthesia",
+      cell: ({ row }: any) => row.original.surgical?.nature_of_anesthesia ?? "---",
+    },
+    {
+      accessorKey: "remarks",
+      header: "Remarks",
+      cell: ({ row }: any) => row.original.surgical?.remarks ?? "---",
+    },
+    {
+      accessorKey: "complications",
+      header: "Complications",
+      cell: ({ row }: any) => row.original.surgical?.complications ?? "---",
+    },
+    {
+      accessorKey: "challenges_during_surgery",
+      header: "Challenges",
+      cell: ({ row }: any) =>
+        row.original.surgical?.challenges_during_surgery ?? "---",
+    },
+  ];
 
-  // ✅ Columns (type-safe but easy build)
-  const columns = useMemo(
-    () => [
-      columnHelper.accessor("surgery_name", {
-        header: "Surgery Name",
-        cell: (info) => info.getValue() ?? "---",
-      }),
-      columnHelper.accessor((row) => row.surgical?.operation_date ?? "---", {
-        id: "operation_date",
-        header: "Operation Date",
-      }),
-      columnHelper.accessor((row) => row.surgical?.procedure_notes ?? "---", {
-        id: "procedure_notes",
-        header: "Procedure Notes",
-      }),
-      columnHelper.accessor((row) => row.surgical?.nature_of_anesthesia ?? "---", {
-        id: "nature_of_anesthesia",
-        header: "Anesthesia",
-      }),
-      columnHelper.accessor((row) => row.surgical?.remarks ?? "---", {
-        id: "remarks",
-        header: "Remarks",
-      }),
-      columnHelper.accessor((row) => row.surgical?.complications ?? "---", {
-        id: "complications",
-        header: "Complications",
-      }),
-      columnHelper.accessor((row) => row.surgical?.challenges_during_surgery ?? "---", {
-        id: "challenges",
-        header: "Challenges",
-      }),
-    ],
-    [columnHelper]
-  );
+  // ✅ Optional event handlers
+  const handleRowClick = (row: SurgicalRecord) => {
+    console.log("Row clicked:", row);
+  };
+
+  const handleCellAction = ({ action, rowData }: any) => {
+    console.log("Cell action:", action, "on row:", rowData);
+  };
 
   return (
     <SmartTable
-      data={surgical_data}
-      columns={columns}
-      
+      data={surgical_data || []}
+      variant="shrink"
+      isLoading={isPending}
+      config={{
+        title: "Surgical Records",
+        description: "Details of surgical operations performed",
+        columns: columns,
+        columnfilterable: false,
+        searchable: true,
+        enablePagination: true,
+        pagination: {
+          pageSize: 10,
+          showSizeSelector: true,
+        },
+      }}
+      onRowClick={handleRowClick}
+      onCellAction={handleCellAction}
     />
   );
 }

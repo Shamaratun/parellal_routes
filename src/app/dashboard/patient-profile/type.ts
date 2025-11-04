@@ -44,18 +44,15 @@ export interface AdmissionData {
   blood_group: string;
 }
 
-export interface SurgicalDetails {
-  operation_date?: string;
-  procedure_notes?: string;
-  nature_of_anesthesia?: string;
-  remarks?: string;
-  complications?: string;
-  challenges_during_surgery?: string;
-}
-
 export interface SurgicalRecord {
+  id: string;
   surgery_name: string;
-  surgical?: SurgicalDetails;
+  surgical?: {
+    operation_date?: string;
+    procedure_notes?: string;
+    remarks?: string;
+    complications?: string;
+  };
 }
 export interface PostOpsData {
   id: number;
@@ -83,9 +80,11 @@ export type PreOpsData = {
   insert_date?: string;
   surgical_history?: string;
   remarks?: string | null;
-  investigations?: Investigation[] | null;
   operation_id?: string[];
-
+  investigations?: {
+    investigation_name: string;
+    investigation_report_result: string;
+  };
 }
 export interface Drug {
   dose: string;
@@ -93,11 +92,7 @@ export interface Drug {
   frequency: string;
 }
 
-export interface Investigation {
-  investigation_id: number;
-  investigation_name: string;
-  investigation_report_result: string;
-}
+
 
 export interface ReleaseData {
   id: number;
