@@ -68,14 +68,12 @@ export default function GetPatientInfoWithId({
 
   if (isPending)
     return (
-      <div className="flex justify-center items-center h-screen bg-gradient-to-br from-blue-100 via-white to-indigo-100">
-        <div className="text-center">
-          <div className="w-10 h-10 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium animate-pulse">
-            Loading patient profile...
-          </p>
-        </div>
-      </div>
+       <div className=" flex flex-col items-center justify-center bg-white/60 dark:bg-gray-900/60 ">
+    <div className="w-10 h-10 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+    <p className="text-gray-700 dark:text-gray-300 font-medium mt-3 animate-pulse">
+      Loading patient profile...
+    </p>
+  </div>
     );
 
   if (error)

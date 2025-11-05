@@ -43,8 +43,8 @@ export default function InvestigationComponent({ pre_ops_data, isPending = false
       variant="shrink"
       isLoading={isPending}
       config={{
-        title: "Investigations",
-        description: "Pre-operative investigation results",
+        // title: "Investigations",
+        // description: "Pre-operative investigation results",
         columns: columns, 
         columnfilterable: false,
         searchable: false,

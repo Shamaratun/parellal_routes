@@ -114,8 +114,8 @@ export default function MedicalComponent({
       variant="shrink"
       isLoading={isPending}
       config={{
-        title: "Pre-Operative Medical Records",
-        description: "Detailed pre-operative information and drug history",
+        // title: "Pre-Operative Medical Records",
+        // description: "Detailed pre-operative information and drug history",
         columns,
         columnfilterable: false,
         searchable: false,

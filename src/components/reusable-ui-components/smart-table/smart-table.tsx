@@ -306,7 +306,7 @@ export default function SmartTable({
 
   return (
     <Card className="w-full relative">
-      <CardHeader className={variant === "shrink" ? "pb-3" : ""}>
+      <CardHeader className={variant === "shrink" ? "pb-0" : ""}>
         <div className="flex justify-between items-start flex-wrap gap-2">
           <div>
             <CardTitle className={variant === "shrink" ? "text-lg" : ""}>
@@ -407,7 +407,7 @@ export default function SmartTable({
 
           <div className="overflow-x-auto" ref={scrollRef}>
             <table
-              className={`w-full table-fixed font-sans ${styles.textSize} text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-700 border-collapse`}
+              className={`w-full font-sans ${styles.textSize} text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-700 border-collapse`}
             >
               <thead className="bg-gray-100 dark:bg-gray-800 sticky top-0 z-10">
                 {table.getHeaderGroups().map((headerGroup) => (

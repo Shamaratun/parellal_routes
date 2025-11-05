@@ -828,8 +828,8 @@ export default function SurgicalComponent({
       variant="shrink"
       isLoading={isPending}
       config={{
-        title: "Surgical Records",
-        description: "Details of surgical operations performed",
+        // title: "Surgical Records",
+        // description: "Details of surgical operations performed",
         columns: columns,
         columnfilterable: false,
         searchable: false,

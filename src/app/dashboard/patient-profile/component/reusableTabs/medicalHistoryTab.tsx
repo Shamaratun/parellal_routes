@@ -16,8 +16,8 @@ export default function MedicalHistoryTab({ surgical_data, pre_ops_data }: Medic
 
   return (
     <TabsContent value="medical-history">
-      <Card className="mt-1">
-        <CardContent className="p-2 sm:p-6">
+      <Card className="mt-0">
+        <CardContent className="sm:p-6">
           <CollapsibleSectionList
             surgical_data={surgical_data}
 
