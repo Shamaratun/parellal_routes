@@ -84,8 +84,8 @@ export type PreOpsData = {
   investigations?: {
     investigation_name: string;
     investigation_report_result: string;
-  };
-}
+  }[]; // 👈 This must be an array!
+};
 export interface Drug {
   dose: string;
   drug_name: string;

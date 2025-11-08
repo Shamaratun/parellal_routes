@@ -494,13 +494,13 @@
 //               className=" bg-gradient-to-br from-blue-50 to-blue-100/70 grid grid-cols-3 gap-5 bg-white border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-4 flex flex-wrap items-center justify-between text-sm text-gray-700"
 //             >
 //               <Field label="Admission Date" value={fmtDate(adm.date_of_adm)} />
-              
+
 //               <Field label="Referral" value={adm.referral_source_name} />
 //               <Field
 //                 label="Release Date"
 //                 value={rel ? fmtDate(rel.discharge_date_time) : "N/A"}
 //               />
-              
+
 //               <Field label="Outcome" value={rel?.outcome || "N/A"} />
 //               <Field label="Hospital" value={adm.hospital_name} />
 //             </div>
@@ -542,13 +542,13 @@ export default function AdmissionRelease({ admissionData, releaseData }: Props) 
     iso ? new Date(iso).toLocaleDateString() : "N/A";
 
   return (
-     <div >
+    <div >
       <h2 className="text-xl pl-7 font-normal text-blue-800 flex items-center gap-2 mb-1">
         🩺 Admission & Release Summary
       </h2>
 
       {admissions.length === 0 ? (
-        <p className="text-gray-500 italic text-center bg-white p-4 rounded-xl shadow-inner">
+        <p className="text-gray-500 italic text-center bg-white p-4 rounded-xl ">
           No admission records found.
         </p>
       ) : (
@@ -558,28 +558,13 @@ export default function AdmissionRelease({ admissionData, releaseData }: Props) 
           return (
             <div
               key={adm.id}
-              className="
-                relative 
-                bg-white 
-                border border-blue-100 
-                rounded-2xl 
-                shadow-sm 
-                hover:shadow-2xl 
-                hover:border-blue-300 
-                transition-all 
-                duration-300
-                pl-8 pr-8
-                py-5 
-                group
-                overflow-hidden
-              "
+              className="relative bg-white  border border-blue-100 rounded-2xl shadow-sm hover:shadow-2xl hover:border-blue-300 transition-all duration-300  pl-8 pr-8 py-5 group overflow-hidden"
             >
               {/* Subtle gradient highlight on hover */}
               <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-blue-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
 
               <div className="relative grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 text-md text-gray-700">
                 <Field label="Admission Date" value={fmtDate(adm.date_of_adm)} />
-               
                 <Field label="Referral" value={adm.referral_source_name} />
                 <Field
                   label="Release Date"
@@ -588,8 +573,7 @@ export default function AdmissionRelease({ admissionData, releaseData }: Props) 
                 <Field label="Outcome" value={rel?.outcome || "N/A"} />
                 <Field label="Adv.On.Discharge" value={rel?.advice_on_discharge || "N/A"} />
                 {/* <Field label="Blood Group" value={rel?.blood_group || "N/A"} /> */}
-               
-                 {/* <Field label="Hospital" value={adm.hospital_name} /> */}
+                <Field label="Hospital" value={adm.hospital_name} />
               </div>
             </div>
           );
@@ -600,7 +584,7 @@ export default function AdmissionRelease({ admissionData, releaseData }: Props) 
 }
 
 // ✅ Reusable compact field with subtle hover text animation
-function Field({ label, value }: { label: string; value?: string }) {
+export function Field({ label, value }: { label: string; value?: string  | number }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center gap-1 whitespace-nowrap">
       <span className="font-semibold text-blue-700 group-hover:text-blue-900 transition-colors duration-200">

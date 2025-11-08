@@ -1,5 +1,6 @@
 "use client";
 
+import { TableExport } from "./table-export";
 import {
   useReactTable,
   getCoreRowModel,
@@ -22,6 +23,8 @@ import {
   Eye,
   ChevronDown,
   Search,
+  ChevronUp,
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,9 +42,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { TableExport } from "./table-export";
 import { TablePagination } from "./table-pagination";
-import { BulkActions } from "./bulk-actions";
 
 export interface TableConfig {
   title?: string;
@@ -77,13 +78,6 @@ export interface TableColumn {
   };
 }
 
-interface BulkActionHandlers<TData = any> {
-  onBulkDelete?: (rows: TData[]) => void;
-  onBulkEmail?: (rows: TData[]) => void;
-  onBulkExport?: (rows: TData[]) => void;
-  onBulkArchive?: (rows: TData[]) => void;
-}
-
 export interface CellActionPayload {
   action: string;
   row: any;
@@ -97,12 +91,11 @@ interface AdvancedTableProps {
   onRowClick?: (row: any) => void;
   onRowAction?: (action: any, row: any) => void;
   onCellAction?: (payload: CellActionPayload) => void;
-  bulkActions?: BulkActionHandlers;
   onAddNew?: () => void;
   isLoading?: boolean;
 }
 
-export default function SmartTable({
+export default function SmartTableSimple({
   data,
   config,
   variant = "regular",
@@ -110,7 +103,6 @@ export default function SmartTable({
   onAddNew,
   onRowAction,
   onCellAction,
-  bulkActions,
   isLoading = false,
 }: AdvancedTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -119,6 +111,7 @@ export default function SmartTable({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [globalFilter, setGlobalFilter] = useState("");
   const [selectedRow, setSelectedRow] = useState<string | null>(null);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [toggleColumnCount, setToggleColumnCount] = useState(1);
 
@@ -127,8 +120,8 @@ export default function SmartTable({
   // Variant-based styling
   const tableStyles = {
     regular: {
-      headerPadding: "px-3 py-2",
-      cellPadding: "px-1 py-1",
+      headerPadding: "px-4 py-2",
+      cellPadding: "px-3 py-1 ",
       minRowHeight: "min-h-[40px]",
       buttonSize: "default",
       textSize: "text-sm",
@@ -198,11 +191,9 @@ export default function SmartTable({
                 col.meta?.isNumeric || typeof value === "number";
               return (
                 <div
-                  className={`${styles.cellPadding} ${
-                    styles.minRowHeight
-                  } flex items-center border-gray-200 dark:border-gray-700 ${
-                    isNumeric ? "justify-end" : "justify-start"
-                  }`}
+                  className={`${styles.cellPadding} ${styles.minRowHeight
+                    } flex items-center border-gray-200 dark:border-gray-700 ${isNumeric ? "justify-end" : "justify-start"
+                    }`}
                 >
                   <span className={`truncate ${styles.textSize}`}>
                     {value?.toString() || ""}
@@ -253,9 +244,11 @@ export default function SmartTable({
         size: 30,
       });
     }
-
     return baseColumns;
   }, [config, styles]);
+  const shouldShowPagination = useMemo(() => {
+    return data.length > 10;
+  }, [data.length]);
 
   const table = useReactTable({
     data,
@@ -263,7 +256,7 @@ export default function SmartTable({
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: config.enablePagination
+    getPaginationRowModel: shouldShowPagination
       ? getPaginationRowModel()
       : undefined,
     getSortedRowModel: getSortedRowModel(),
@@ -305,99 +298,85 @@ export default function SmartTable({
   );
 
   return (
-    <Card className="w-full relative">
-      <CardHeader className={variant === "shrink" ? "pb-0" : ""}>
-        <div className="flex justify-between items-start flex-wrap gap-2">
-          <div>
-            <CardTitle className={variant === "shrink" ? "text-lg" : ""}>
-              {config.title}
-            </CardTitle>
-            {config.description && (
-              <CardDescription
-                className={variant === "shrink" ? "text-sm" : ""}
-              >
-                {config.description}
-              </CardDescription>
-            )}
+    <Card className="w-full relative p-0 m-0 border-0 shadow-none">
+      {/* Header Section - Conditionally Rendered */}
+      {isHeaderVisible && (
+        <CardHeader className={`p-4 pb-2 ${variant === "shrink" ? "pb-1" : ""}`}>
+          <div className="flex justify-between items-start flex-wrap gap-2">
+            <div>
+              {config.title && (
+                <CardTitle className={variant === "shrink" ? "text-lg" : ""}>
+                  {config.title}
+                </CardTitle>
+              )}
+              {config.description && (
+                <CardDescription
+                  className={variant === "shrink" ? "text-sm" : ""}
+                >
+                  {config.description}
+                </CardDescription>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2 ml-auto">
+              {config.exportable && (
+                <TableExport
+                  data={data}
+                  fileName={config.exportFileName || "table-data"}
+                  columns={config.columns.map((col) => ({
+                    key: col.accessorKey || col.key || col.id || "",
+                    label: col.header || col.label || "",
+                  }))}
+                />
+              )}
+              {config.columnfilterable && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size={"sm"}>
+                      <Eye className="mr-2 h-4 w-4" />
+                      Columns
+                      <ChevronDown className="ml-2 h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    {table
+                      .getAllColumns()
+                      .filter((column) => column.getCanHide())
+                      .map((column) => (
+                        <DropdownMenuCheckboxItem
+                          key={column.id}
+                          className="capitalize"
+                          checked={column.getIsVisible()}
+                          onCheckedChange={(value) => {
+                            column.toggleVisibility(!!value);
+                            setToggleColumnCount((prev) => prev + 1);
+                          }}
+                        >
+                          {column.id}
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 ml-auto">
-            {config.allowAddNew && (
-              <Button
-                onClick={() => onAddNew?.()}
-                size={"sm"}
-                className="bg-primary text-white hover:bg-primary/90"
-              >
-                + Add New
-              </Button>
-            )}
-            {config.exportable && (
-              <TableExport
-                data={data}
-                fileName={config.exportFileName || "table-data"}
-                columns={config.columns.map((col) => ({
-                  key: col.accessorKey || col.key || col.id || "",
-                  label: col.header || col.label || "",
-                }))}
-                
+          {config.searchable && (
+            <div className="relative flex-1 max-w-sm mt-4">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                aria-label="Search table"
+                placeholder="Search all columns..."
+                value={globalFilter ?? ""}
+                onChange={(event) => setGlobalFilter(String(event.target.value))}
+                className="pl-8"
               />
-            )}
-            {config.columnfilterable && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size={"sm"}>
-                    <Eye className="mr-2 h-4 w-4" />
-                    Columns
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  {table
-                    .getAllColumns()
-                    .filter((column) => column.getCanHide())
-                    .map((column) => (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) => {
-                          column.toggleVisibility(!!value);
-                          setToggleColumnCount((prev) => prev + 1);
-                        }}
-                      >
-                        {column.id}
-                      </DropdownMenuCheckboxItem>
-                    ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-          </div>
-        </div>
+            </div>
+          )}
+        </CardHeader>
+      )}
 
-        {config.searchable && (
-          <div className="relative flex-1 max-w-sm mt-4">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              aria-label="Search table"
-              placeholder="Search all columns..."
-              value={globalFilter ?? ""}
-              onChange={(event) => setGlobalFilter(String(event.target.value))}
-              className="pl-8"
-              // size={variant === "shrink" ? "sm" : "default"}
-            />
-          </div>
-        )}
-
-        {config.enableRowselection && bulkActions && (
-          <BulkActions
-            table={table}
-            {...bulkActions}
-            // buttonSize={styles.buttonSize}
-          />
-        )}
-      </CardHeader>
-
-      <CardContent className={variant === "shrink" ? "py-3" : ""}>
+      <CardContent className={`p-0 ${variant === "shrink" ? "py-1" : ""}`}>
         <div className="rounded-md border overflow-hidden relative">
           {isLoading && (
             <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70 dark:bg-gray-900/70">
@@ -407,7 +386,7 @@ export default function SmartTable({
 
           <div className="overflow-x-auto" ref={scrollRef}>
             <table
-              className={`w-full font-sans ${styles.textSize} text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-700 border-collapse`}
+              className={`w-full table-fixed font-sans ${styles.textSize} text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-700 border-collapse`}
             >
               <thead className="bg-gray-100 dark:bg-gray-800 sticky top-0 z-10">
                 {table.getHeaderGroups().map((headerGroup) => (
@@ -416,14 +395,14 @@ export default function SmartTable({
                       <th
                         key={header.id}
                         style={{ width: header.getSize() }}
-                        className={`border border-gray-300 dark:border-gray-700 ${styles.headerPadding} text-left font-semibold bg-gray-100 dark:bg-gray-800 relative`}
+                        className={`border border-gray-300 dark:border-gray-700 ${styles.headerPadding} text-center font-semibold bg-gray-100 dark:bg-gray-800 relative`}
                       >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                         {header.column.getCanResize() && (
                           <div
                             onMouseDown={header.getResizeHandler()}
@@ -442,9 +421,8 @@ export default function SmartTable({
                   <tr>
                     <td
                       colSpan={columns.length}
-                      className={`text-center text-muted-foreground ${
-                        variant === "shrink" ? "py-4" : "py-6"
-                      }`}
+                      className={`text-center text-muted-foreground ${variant === "shrink" ? "py-4" : "py-6"
+                        }`}
                     >
                       Loading...
                     </td>
@@ -461,13 +439,13 @@ export default function SmartTable({
                           : "bg-gray-50 dark:bg-gray-800",
                         "hover:bg-blue-50 dark:hover:bg-blue-900",
                         selectedRow === row.id && "bg-blue-100 dark:bg-blue-700"
-                      )}
+                      ) }
                     >
                       {row.getVisibleCells().map((cell) => (
                         <td
                           key={cell.id}
                           style={{ width: cell.column.getSize() }}
-                          className={`border border-gray-300 dark:border-gray-700 ${styles.cellPadding} truncate whitespace-nowrap overflow-hidden`}
+                          className={`border border-gray-300 dark:border-gray-700 ${styles.cellPadding} whitespace-normal break-words text-center`}
                         >
                           {flexRender(cell.column.columnDef.cell, {
                             ...cell.getContext(),
@@ -481,9 +459,8 @@ export default function SmartTable({
                   <tr>
                     <td
                       colSpan={columns.length}
-                      className={`text-center text-muted-foreground ${
-                        variant === "shrink" ? "py-4" : "py-6"
-                      }`}
+                      className={`text-center text-muted-foreground ${variant === "shrink" ? "py-4" : "py-6"
+                        }`}
                     >
                       No results found.
                     </td>
@@ -494,8 +471,9 @@ export default function SmartTable({
           </div>
         </div>
 
-        {config.enablePagination && (
-          <div className={variant === "shrink" ? "py-2" : "py-4"}>
+        {/* Show pagination only when there are more than 10 records */}
+        {shouldShowPagination && (
+          <div className={`px-4 ${variant === "shrink" ? "py-2" : "py-4"}`}>
             <TablePagination table={table} />
           </div>
         )}
